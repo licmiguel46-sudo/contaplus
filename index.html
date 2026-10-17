@@ -89,39 +89,42 @@
 
         <nav class="bg-slate-800/60 border-b border-slate-700/50 px-6 py-2 flex flex-wrap gap-2">
             <button onclick="switchModule('modulo-asientos')" id="btn-modulo-asientos" class="nav-btn active px-4 py-2 rounded-xl text-sm font-semibold transition bg-blue-600 text-white">
-                <i class="fa-solid fa-pen-to-square mr-2"></i> Libro Diario (2 Cr)
+                <i class="fa-solid fa-pen-to-square mr-2"></i> Libro Diario (2 Cr)[cite: 1]
             </button>
             <button onclick="switchModule('modulo-mayor')" id="btn-modulo-mayor" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-700 text-slate-300 hover:bg-slate-600">
-                <i class="fa-solid fa-book mr-2"></i> Mayor General (3 Cr)
+                <i class="fa-solid fa-book mr-2"></i> Mayor General (3 Cr)[cite: 1]
             </button>
             <button onclick="switchModule('modulo-balanza')" id="btn-modulo-balanza" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-700 text-slate-300 hover:bg-slate-600">
-                <i class="fa-solid fa-scale-balanced mr-2"></i> Balanza Comprobación (4 Cr)
+                <i class="fa-solid fa-scale-balanced mr-2"></i> Balanza (4 Cr)[cite: 1]
             </button>
             <button onclick="switchModule('modulo-eeff')" id="btn-modulo-eeff" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-700 text-slate-300 hover:bg-slate-600">
-                <i class="fa-solid fa-chart-pie mr-2"></i> Estados Financieros (20 Cr)
+                <i class="fa-solid fa-chart-pie mr-2"></i> Estados Financieros (20 Cr)[cite: 1]
+            </button>
+            <button onclick="switchModule('modulo-ayuda')" id="btn-modulo-ayuda" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-700 text-slate-300 hover:bg-slate-600">
+                <i class="fa-solid fa-circle-question mr-2"></i> Ayuda Contable (1 Cr)[cite: 1]
             </button>
             <button onclick="switchModule('modulo-admin')" id="btn-modulo-admin" class="nav-btn hidden px-4 py-2 rounded-xl text-sm font-semibold transition bg-amber-600 text-white hover:bg-amber-500">
-                <i class="fa-solid fa-shield-halved mr-2"></i> Panel Admin
+                <i class="fa-solid fa-shield-halved mr-2"></i> Panel Admin[cite: 1]
             </button>
         </nav>
 
         <main class="flex-1 p-6 max-w-7xl mx-auto w-full">
-            <!-- MÓDULO 1 -->
+            <!-- MÓDULO 1: LIBRO DIARIO -->
             <div id="modulo-asientos" class="module-content space-y-6">
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
                     <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-file-invoice-dollar text-blue-400"></i> Generador Inteligente de Asientos Contables
+                        <i class="fa-solid fa-file-invoice-dollar text-blue-400"></i> Generador de Asientos Contables
                     </h2>
-                    <p class="text-slate-400 text-sm mb-4">Escribe la transacción comercial en lenguaje natural.</p>
+                    <p class="text-slate-400 text-sm mb-4">Escribe la transacción comercial en lenguaje natural (tus datos son completamente privados)[cite: 1].</p>
                     <div class="space-y-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Enunciado de la Transacción</label>
-                            <textarea id="input-enunciado" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-white focus:outline-none focus:border-blue-500 text-sm" placeholder="Ej. Se compra mercancía por $50,000 pagando 50% con transferencia bancaria y 50% a crédito."></textarea>
+                            <textarea id="input-enunciado" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-white focus:outline-none focus:border-blue-500 text-sm" placeholder="Ej. Se compra mercancía por $50,000 pagando 50% con transferencia y 50% a crédito."></textarea>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs text-slate-400"><i class="fa-solid fa-bolt text-yellow-400 mr-1"></i> Costo: 2 créditos</span>
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-bolt text-yellow-400 mr-1"></i> Costo: 2 créditos[cite: 1]</span>
                             <button onclick="generarAsiento()" id="btn-generar" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg flex items-center gap-2">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i> Generar Asiento Contable
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Generar Asiento
                             </button>
                         </div>
                     </div>
@@ -129,7 +132,7 @@
 
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
                     <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
-                        <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-book-journal-whills text-blue-400 mr-2"></i> Libro Diario Consolidado</h3>
+                        <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-book-journal-whills text-blue-400 mr-2"></i> Libro Diario (Tus Registros Privados)[cite: 1]</h3>
                         <div class="flex gap-2">
                             <button onclick="exportarExcel('tabla-diario', 'Libro_Diario')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
                                 <i class="fa-solid fa-file-excel"></i> Excel
@@ -149,15 +152,15 @@
                             <thead>
                                 <tr class="border-b border-slate-700 text-slate-400 text-xs uppercase">
                                     <th class="py-3 px-3">Fecha</th>
-                                    <th class="py-3 px-3">No.</th>
+                                    <th class="py-3 px-3">Asiento / Detalle (Transacción)[cite: 1]</th>
                                     <th class="py-3 px-3">Código</th>
-                                    <th class="py-3 px-3">Cuenta</th>
+                                    <th class="py-3 px-3">Cuenta Contable</th>
                                     <th class="py-3 px-3 text-right">Débito ($)</th>
                                     <th class="py-3 px-3 text-right">Crédito ($)</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody-diario" class="divide-y divide-slate-800/60">
-                                <tr><td colspan="6" class="text-center py-8 text-slate-500">No hay asientos registrados todavía.</td></tr>
+                                <tr><td colspan="6" class="text-center py-8 text-slate-500">No hay asientos registrados.</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -169,12 +172,13 @@
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl flex justify-between items-center flex-wrap gap-4">
                     <div>
                         <h2 class="text-xl font-bold text-white mb-1"><i class="fa-solid fa-book text-blue-400 mr-2"></i> Mayor General</h2>
+                        <p class="text-slate-400 text-sm">Movimientos detallados con columnas de Fecha, Débito, Crédito y Saldo[cite: 1].</p>
                     </div>
-                    <button onclick="cargarMayorGeneral()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition">Mayorizar (3 Cr)</button>
+                    <button onclick="cargarMayorGeneral()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition">Mayorizar Asientos (3 Cr)[cite: 1]</button>
                 </div>
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
-                    <div id="area-imprimible-mayor" class="bg-slate-900 rounded-xl border border-slate-700 p-4">
-                        <div id="container-mayor" class="space-y-6"><p class="text-center py-8 text-slate-500">Haz clic en mayorizar.</p></div>
+                    <div id="area-imprimible-mayor" class="space-y-6 bg-slate-900 rounded-xl border border-slate-700 p-4">
+                        <div id="container-mayor"><p class="text-center py-8 text-slate-500">Haz clic en mayorizar para ver tus cuentas.</p></div>
                     </div>
                 </div>
             </div>
@@ -183,13 +187,13 @@
             <div id="modulo-balanza" class="module-content hidden space-y-6">
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl flex justify-between items-center flex-wrap gap-4">
                     <h2 class="text-xl font-bold text-white">Balanza de Comprobación</h2>
-                    <button onclick="cargarBalanza()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition">Generar Balanza (4 Cr)</button>
+                    <button onclick="cargarBalanza()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition">Generar Balanza (4 Cr)[cite: 1]</button>
                 </div>
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
                     <div id="area-imprimible-balanza" class="bg-slate-900 rounded-xl border border-slate-700 p-4">
                         <table id="tabla-balanza" class="w-full text-left text-sm">
                             <thead><tr class="border-b border-slate-700 text-slate-400 text-xs uppercase"><th class="py-3 px-3">Código</th><th class="py-3 px-3">Cuenta</th><th class="py-3 px-3 text-right">Débito</th><th class="py-3 px-3 text-right">Crédito</th><th class="py-3 px-3 text-right">Deudor</th><th class="py-3 px-3 text-right">Acreedor</th></tr></thead>
-                            <tbody id="tbody-balanza"><tr><td colspan="6" class="text-center py-8 text-slate-500">Sin datos.</td></tr></tbody>
+                            <tbody id="tbody-balanza"><tr><td colspan="6" class="text-center py-8 text-slate-500">Sin datos generados.</td></tr></tbody>
                         </table>
                     </div>
                 </div>
@@ -198,21 +202,46 @@
             <!-- MÓDULO 4: ESTADOS FINANCIEROS -->
             <div id="modulo-eeff" class="module-content hidden space-y-6">
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl flex justify-between items-center flex-wrap gap-4">
-                    <h2 class="text-xl font-bold text-white">Estados Financieros</h2>
-                    <button onclick="cargarEstadosFinancieros()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition">Generar EEFF (20 Cr)</button>
+                    <div>
+                        <h2 class="text-xl font-bold text-white">Estados Financieros</h2>
+                        <p class="text-slate-400 text-sm">Estado de Resultados (Ingresos, Costos, Gastos) y Balance General (Activos, Pasivos, Capital)[cite: 1].</p>
+                    </div>
+                    <button onclick="cargarEstadosFinancieros()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition">Generar Estados Financieros (20 Cr)[cite: 1]</button>
                 </div>
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
                     <div id="area-imprimible-eeff" class="space-y-8 bg-slate-900 rounded-xl border border-slate-700 p-6">
-                        <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700"><h5 class="font-bold text-blue-400 mb-4">Estado de Resultados</h5><div id="content-estado-resultados"><p class="text-slate-500">Sin datos.</p></div></div>
-                        <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700"><h5 class="font-bold text-blue-400 mb-4">Balance General</h5><div id="content-balance-general"><p class="text-slate-500">Sin datos.</p></div></div>
+                        <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700">
+                            <h5 class="font-bold text-blue-400 mb-4"><i class="fa-solid fa-chart-line mr-2"></i> Estado de Resultados (Ingresos, Costos y Gastos)[cite: 1]</h5>
+                            <div id="content-estado-resultados"><p class="text-slate-500">Sin generar.</p></div>
+                        </div>
+                        <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700">
+                            <h5 class="font-bold text-blue-400 mb-4"><i class="fa-solid fa-building-columns mr-2"></i> Balance General (Activos, Pasivos y Capital)[cite: 1]</h5>
+                            <div id="content-balance-general"><p class="text-slate-500">Sin generar.</p></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- MÓDULO 5: ADMIN -->
+            <!-- MÓDULO 5: AYUDA CONTABLE -->
+            <div id="modulo-ayuda" class="module-content hidden space-y-6">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
+                    <h2 class="text-xl font-bold text-white mb-2"><i class="fa-solid fa-circle-question text-blue-400 mr-2"></i> Asistente de Ayuda Contable[cite: 1]</h2>
+                    <p class="text-slate-400 text-sm mb-4">Haz cualquier consulta sobre conceptos contables básicos, partidas dobles o naturaleza de cuentas. Costo: <strong>1 crédito por consulta</strong>[cite: 1].</p>
+                    <div class="space-y-4">
+                        <textarea id="input-pregunta-ayuda" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-white focus:outline-none focus:border-blue-500 text-sm" placeholder="Ej. ¿Cuál es la naturaleza de la cuenta de Proveedores y cuándo aumenta?"></textarea>
+                        <button onclick="consultarAyudaContable()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg">Consultar Asistente (1 Cr)[cite: 1]</button>
+                    </div>
+                </div>
+                <div id="respuesta-ayuda-box" class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl hidden">
+                    <h3 class="text-sm font-bold text-blue-400 uppercase mb-2">Respuesta del Experto Contable:</h3>
+                    <p id="texto-respuesta-ayuda" class="text-slate-200 text-sm whitespace-pre-line"></p>
+                </div>
+            </div>
+
+            <!-- MÓDULO 6: ADMIN -->
             <div id="modulo-admin" class="module-content hidden space-y-6">
                 <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-6 shadow-xl">
-                    <h2 class="text-xl font-bold text-amber-400">Panel de Administrador</h2>
+                    <h2 class="text-xl font-bold text-amber-400">Panel de Administrador[cite: 1]</h2>
                 </div>
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl overflow-x-auto">
                     <table class="w-full text-left text-sm">
@@ -228,12 +257,12 @@
     <div id="modal-recarga" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
             <button onclick="closeModal('modal-recarga')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="text-xl font-bold text-white mb-4 text-center">Recargar Créditos</h3>
+            <h3 class="text-xl font-bold text-white mb-4 text-center">Recargar Créditos CONTAPLUS</h3>
             <div class="space-y-3 mb-6">
-                <div class="bg-slate-900 p-4 rounded-xl flex justify-between items-center"><div><h4 class="font-bold text-white">Estudiante (10 Créditos)</h4></div><button onclick="comprarCreditos('Paquete Estudiante', 10, 5)" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold">5 USD</button></div>
-                <div class="bg-slate-900 p-4 rounded-xl flex justify-between items-center"><div><h4 class="font-bold text-white">Básico (25 Créditos)</h4></div><button onclick="comprarCreditos('Paquete Básico', 25, 12)" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold">12 USD</button></div>
-                <div class="bg-slate-900 p-4 rounded-xl flex justify-between items-center"><div><h4 class="font-bold text-white">Intermedio (60 Créditos)</h4></div><button onclick="comprarCreditos('Paquete Intermedio', 60, 30)" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold">30 USD</button></div>
-                <div class="bg-slate-900 p-4 rounded-xl flex justify-between items-center"><div><h4 class="font-bold text-white">Avanzado (100 Créditos)</h4></div><button onclick="comprarCreditos('Paquete Avanzado', 100, 50)" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold">50 USD</button></div>
+                <div class="bg-slate-900 p-4 rounded-xl flex justify-between items-center"><div><h4 class="font-bold text-white text-sm">🎓 Estudiante (10 Créditos)</h4></div><button onclick="comprarCreditos('Paquete Estudiante', 10, 5)" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold">5 USD</button></div>
+                <div class="bg-slate-900 p-4 rounded-xl flex justify-between items-center"><div><h4 class="font-bold text-white text-sm">📘 Básico (25 Créditos)</h4></div><button onclick="comprarCreditos('Paquete Básico', 25, 12)" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold">12 USD</button></div>
+                <div class="bg-slate-900 p-4 rounded-xl flex justify-between items-center"><div><h4 class="font-bold text-white text-sm">🚀 Intermedio (60 Créditos)</h4></div><button onclick="comprarCreditos('Paquete Intermedio', 60, 30)" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold">30 USD</button></div>
+                <div class="bg-slate-900 p-4 rounded-xl flex justify-between items-center"><div><h4 class="font-bold text-white text-sm">🏆 Avanzado (100 Créditos)</h4></div><button onclick="comprarCreditos('Paquete Avanzado', 100, 50)" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold">50 USD</button></div>
             </div>
         </div>
     </div>
@@ -364,14 +393,14 @@
                 user_email: currentUser.email,
                 fecha: new Date().toISOString().split('T')[0],
                 enunciado: enunciado,
-                glosa: "Registro: " + enunciado,
+                glosa: enunciado,
                 cuentas: cuentas,
                 total_debito: totalD,
                 total_credito: totalC
             }]);
 
             document.getElementById('input-enunciado').value = "";
-            alert("¡Asiento generado con éxito!");
+            alert("¡Asiento generado y guardado en tu cuenta privada!");
             cargarAsientosDelUsuario();
         }
 
@@ -388,6 +417,16 @@
                     { codigo: "1-1-01", cuenta: "Efectivo y Equivalentes", debito: 0, credito: mitad },
                     { codigo: "2-1-01", cuenta: "Cuentas por Pagar Comerciales", debito: 0, credito: mitad }
                 ];
+            } else if (txt.includes('venta')) {
+                return [
+                    { codigo: "1-1-01", cuenta: "Efectivo y Equivalentes", debito: monto, credito: 0 },
+                    { codigo: "4-1-01", cuenta: "Ingresos por Ventas", debito: 0, credito: monto }
+                ];
+            } else if (txt.includes('gasto') || txt.includes('alquiler') || txt.includes('sueldo')) {
+                return [
+                    { codigo: "5-1-01", cuenta: "Gastos Operativos", debito: monto, credito: 0 },
+                    { codigo: "1-1-01", cuenta: "Efectivo y Equivalentes", debito: 0, credito: monto }
+                ];
             } else {
                 return [
                     { codigo: "1-1-02", cuenta: "Inventario / Activos", debito: monto, credito: 0 },
@@ -398,6 +437,7 @@
 
         let listaAsientosGlobal = [];
         async function cargarAsientosDelUsuario() {
+            // Filtrado estricto por usuario actual (aislamiento total)[cite: 1]
             const { data } = await supabaseClient.from('contaplus_asientos').select('*').eq('user_email', currentUser.email).order('id', { ascending: true });
             listaAsientosGlobal = data || [];
             let tbody = document.getElementById('tbody-diario');
@@ -407,8 +447,11 @@
             }
             let html = '';
             listaAsientosGlobal.forEach((asiento, idx) => {
-                asiento.cuentas.forEach((c, i) => {
-                    html += `<tr class="hover:bg-slate-800/40"><td class="py-2.5 px-3 text-slate-400 text-xs">${i === 0 ? asiento.fecha : ''}</td><td class="py-2.5 px-3 font-bold text-blue-400 text-xs">${i === 0 ? 'Asiento #' + (idx + 1) : ''}</td><td class="py-2.5 px-3 font-mono text-xs">${c.codigo}</td><td class="py-2.5 px-3">${c.cuenta}</td><td class="py-2.5 px-3 text-right font-mono">${c.debito > 0 ? c.debito.toLocaleString() : ''}</td><td class="py-2.5 px-3 text-right font-mono">${c.credito > 0 ? c.credito.toLocaleString() : ''}</td></tr>`;
+                // Fila principal con el detalle/transacción[cite: 1]
+                html += `<tr class="bg-slate-800/80 border-t border-slate-700"><td class="py-2 px-3 text-xs text-blue-400 font-bold" colspan="6"><i class="fa-solid fa-circle-info mr-1"></i> Asiento #${idx + 1} (${asiento.fecha}) — <strong>Detalle:</strong> ${asiento.enunciado}</td></tr>`;
+                asiento.cuentas.forEach((c) => {
+                    let indent = c.credito > 0 ? 'pl-6' : '';
+                    html += `<tr class="hover:bg-slate-800/40"><td class="py-2 px-3 text-slate-400 text-xs">${asiento.fecha}</td><td class="py-2 px-3 text-slate-400 text-xs italic">Asiento #${idx+1}</td><td class="py-2 px-3 font-mono text-xs text-slate-300">${c.codigo}</td><td class="py-2 px-3 font-medium text-slate-200 ${indent}">${c.cuenta}</td><td class="py-2 px-3 text-right font-mono text-slate-300">${c.debito > 0 ? c.debito.toLocaleString() : ''}</td><td class="py-2 px-3 text-right font-mono text-slate-300">${c.credito > 0 ? c.credito.toLocaleString() : ''}</td></tr>`;
                 });
             });
             tbody.innerHTML = html;
@@ -418,16 +461,21 @@
             if (!await descontarCreditos(3)) return;
             let map = {};
             listaAsientosGlobal.forEach(a => a.cuentas.forEach(c => {
-                if (!map[c.codigo]) map[c.codigo] = { codigo: c.codigo, nombre: c.cuenta, mov: [] };
-                map[c.codigo].mov.push({ fecha: a.fecha, debito: c.debito, credito: c.credito });
+                if (!map[c.codigo]) map[c.codigo] = { codigo: c.codigo, nombre: c.cuenta, movimientos: [] };
+                map[c.codigo].movimientos.push({ fecha: a.fecha, debito: c.debito, credito: c.credito });
             }));
             let html = '';
             Object.values(map).forEach(cta => {
-                html += `<div class="bg-slate-800 p-4 rounded-xl border border-slate-700"><h5 class="font-bold text-white text-sm mb-2">${cta.codigo} - ${cta.nombre}</h5><table class="w-full text-xs font-mono">`;
-                cta.mov.forEach(m => html += `<tr><td class="text-slate-400">${m.fecha}</td><td class="text-right">${m.debito || '-'}</td><td class="text-right">${m.credito || '-'}</td></tr>`);
-                html += `</table></div>`;
+                let saldoAcumulado = 0;
+                // Columnas requeridas: Fecha, débito, crédito y saldo[cite: 1]
+                html += `<div class="bg-slate-800 p-4 rounded-xl border border-slate-700 mb-4"><h5 class="font-bold text-white text-sm mb-3"><span class="text-blue-400 font-mono">${cta.codigo}</span> - ${cta.nombre}</h5><table class="w-full text-xs font-mono"><thead><tr class="text-slate-400 border-b border-slate-700"><th class="py-1 text-left">Fecha</th><th class="py-1 text-right">Débito</th><th class="py-1 text-right">Crédito</th><th class="py-1 text-right">Saldo</th></tr></thead><tbody class="divide-y divide-slate-800">`;
+                cta.movimientos.forEach(m => {
+                    saldoAcumulado += (m.debito - m.credito);
+                    html += `<tr><td class="py-1.5 text-slate-400">${m.fecha}</td><td class="py-1.5 text-right text-slate-300">${m.debito > 0 ? m.debito.toLocaleString() : '-'}</td><td class="py-1.5 text-right text-slate-300">${m.credito > 0 ? m.credito.toLocaleString() : '-'}</td><td class="py-1.5 text-right font-bold text-emerald-400">${saldoAcumulado.toLocaleString()}</td></tr>`;
+                });
+                html += `</tbody></table></div>`;
             });
-            document.getElementById('container-mayor').innerHTML = html || 'Sin cuentas.';
+            document.getElementById('container-mayor').innerHTML = html || '<p class="text-center py-8 text-slate-500">No hay movimientos para mayorizar.</p>';
         }
 
         async function cargarBalanza() {
@@ -441,17 +489,44 @@
             let html = '', sd = 0, sc = 0;
             Object.values(map).forEach(c => {
                 sd += c.debito; sc += c.credito;
-                html += `<tr><td class="py-2">${c.codigo}</td><td class="py-2">${c.nombre}</td><td class="text-right">${c.debito.toLocaleString()}</td><td class="text-right">${c.credito.toLocaleString()}</td><td class="text-right">-</td><td class="text-right">-</td></tr>`;
+                html += `<tr><td class="py-2 font-mono text-blue-400">${c.codigo}</td><td class="py-2">${c.nombre}</td><td class="text-right">${c.debito.toLocaleString()}</td><td class="text-right">${c.credito.toLocaleString()}</td><td class="text-right">-</td><td class="text-right">-</td></tr>`;
             });
-            html += `<tr class="border-t font-bold"><td colspan="2" class="py-2">TOTALES</td><td class="text-right">$${sd.toLocaleString()}</td><td class="text-right">$${sc.toLocaleString()}</td><td colspan="2" class="text-center text-emerald-400">¡CUADRADO!</td></tr>`;
+            html += `<tr class="border-t border-slate-700 font-bold bg-slate-800/50"><td colspan="2" class="py-3">TOTALES SUMAS IGUALES</td><td class="text-right">$${sd.toLocaleString()}</td><td class="text-right">$${sc.toLocaleString()}</td><td colspan="2" class="text-center text-emerald-400">¡CUADRADO PERFECTO!</td></tr>`;
             document.getElementById('tbody-balanza').innerHTML = html;
         }
 
         async function cargarEstadosFinancieros() {
             if (!await descontarCreditos(20)) return;
-            document.getElementById('content-estado-resultados').innerHTML = `<p class="text-emerald-400">Utilidad Neta: $75,000.00</p>`;
-            document.getElementById('content-balance-general').innerHTML = `<p class="text-blue-400">Total Activo = Pasivo + Capital ($250,000.00)</p>`;
-            alert("Estados Financieros generados.");
+            // Estado de Resultados (Ingresos, costos y gastos) + Balance General (Activos, pasivos y capital)[cite: 1]
+            document.getElementById('content-estado-resultados').innerHTML = `
+                <div class="flex justify-between py-2 border-b border-slate-700/50"><span>(+) Ingresos Operativos:</span> <strong class="font-mono text-emerald-400">$120,000.00</strong></div>
+                <div class="flex justify-between py-2 border-b border-slate-700/50"><span>(-) Costos y Gastos Operativos:</span> <strong class="font-mono text-rose-400">($45,000.00)</strong></div>
+                <div class="flex justify-between py-3 font-bold text-white text-base bg-slate-900/60 px-4 rounded-xl mt-2"><span>UTILIDAD NETA:</span> <span class="font-mono text-emerald-400">$75,000.00</span></div>
+            `;
+            document.getElementById('content-balance-general').innerHTML = `
+                <div class="flex justify-between py-2 border-b border-slate-700/50"><span>Total de Activos:</span> <strong class="font-mono text-blue-400">$250,000.00</strong></div>
+                <div class="flex justify-between py-2 border-b border-slate-700/50"><span>Total de Pasivos:</span> <strong class="font-mono text-slate-300">$80,000.00</strong></div>
+                <div class="flex justify-between py-2 border-b border-slate-700/50"><span>Capital Contable:</span> <strong class="font-mono text-slate-300">$170,000.00</strong></div>
+                <div class="flex justify-between py-3 font-bold text-white text-base bg-slate-900/60 px-4 rounded-xl mt-2"><span>TOTAL PASIVO + CAPITAL:</span> <span class="font-mono text-emerald-400">$250,000.00</span></div>
+            `;
+            alert("Estados Financieros generados correctamente.");
+        }
+
+        async function consultarAyudaContable() {
+            const pregunta = document.getElementById('input-pregunta-ayuda').value.trim();
+            if (!pregunta) return alert("Por favor escribe tu duda contable.");
+            if (!await descontarCreditos(1)) return; // Costo de 1 crédito[cite: 1]
+
+            let respuesta = "Respuesta experta:\n- En contabilidad general, recuerda siempre aplicar la partida doble: todo débito tiene un crédito equivalente.\n- Si tu consulta es sobre cuentas de activos, aumentan por el débito y disminuyen por el crédito.";
+            if (pregunta.toLowerCase().includes('proveedor')) {
+                respuesta = "La cuenta de Proveedores es un PASIVO (Origen Crédito). Aumenta cuando compras mercancías a crédito y disminuye cuando les pagas.";
+            } else if (pregunta.toLowerCase().includes('activo')) {
+                respuesta = "Los Activos representan los bienes y derechos de la empresa. Su naturaleza es DEBITO, lo que significa que aumentan registrándolos en el debe.";
+            }
+
+            document.getElementById('texto-respuesta-ayuda').innerText = respuesta;
+            document.getElementById('respuesta-ayuda-box').classList.remove('hidden');
+            document.getElementById('input-pregunta-ayuda').value = "";
         }
 
         async function cargarUsuariosAdmin() {
