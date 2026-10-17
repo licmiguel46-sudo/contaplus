@@ -24,16 +24,14 @@
                     <i class="fa-solid fa-calculator"></i>
                 </div>
                 <h1 class="text-2xl font-bold text-white tracking-wide">CONTAPLUS <span class="text-blue-400 text-lg">1.0</span></h1>
-                <p class="text-slate-400 text-sm mt-1">Sistema Contable Automatizado</p>
+                <p class="text-slate-400 text-sm mt-1">Sistema Contable con Catálogo Integrado</p>
             </div>
 
-            <!-- Pestañas Login / Registro -->
             <div class="flex bg-slate-900 p-1 rounded-xl mb-6">
                 <button type="button" onclick="switchTab('login')" id="tab-login" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white transition">Iniciar Sesión</button>
                 <button type="button" onclick="switchTab('register')" id="tab-register" class="flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400 transition">Registrarse</button>
             </div>
 
-            <!-- Formulario -->
             <form id="auth-form" onsubmit="handleAuth(event)" class="space-y-4">
                 <div id="name-field" class="hidden">
                     <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Nombre Completo</label>
@@ -87,7 +85,11 @@
             </div>
         </header>
 
+        <!-- Barra de Navegación -->
         <nav class="bg-slate-800/60 border-b border-slate-700/50 px-6 py-2 flex flex-wrap gap-2">
+            <button onclick="switchModule('modulo-catalogo')" id="btn-modulo-catalogo" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-700 text-slate-300 hover:bg-slate-600">
+                <i class="fa-solid fa-list-ol mr-2"></i> Catálogo de Cuentas
+            </button>
             <button onclick="switchModule('modulo-asientos')" id="btn-modulo-asientos" class="nav-btn active px-4 py-2 rounded-xl text-sm font-semibold transition bg-blue-600 text-white">
                 <i class="fa-solid fa-pen-to-square mr-2"></i> Libro Diario (2 Cr)
             </button>
@@ -110,32 +112,105 @@
 
         <main class="flex-1 p-6 max-w-7xl mx-auto w-full">
 
+            <!-- MÓDULO 0: CATÁLOGO DE CUENTAS -->
+            <div id="modulo-catalogo" class="module-content hidden space-y-6">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
+                    <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-white"><i class="fa-solid fa-list-ol text-blue-400 mr-2"></i> Catálogo Oficial de Cuentas Contables</h2>
+                            <p class="text-slate-400 text-sm">El generador de asientos utiliza este catálogo para asignar códigos, nombres y naturalezas exactas.</p>
+                        </div>
+                        <button onclick="exportarExcel('tabla-catalogo', 'Catalogo_Cuentas')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
+                            <i class="fa-solid fa-file-excel"></i> Exportar Catálogo
+                        </button>
+                    </div>
+
+                    <!-- Formulario para agregar nueva cuenta al catálogo -->
+                    <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 mb-6">
+                        <h4 class="text-xs font-bold uppercase text-blue-400 mb-3"><i class="fa-solid fa-plus-circle mr-1"></i> Agregar Nueva Cuenta al Catálogo</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-5 gap-3">
+                            <input type="text" id="cat-codigo" placeholder="Código (Ej. 1-1-08)" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                            <input type="text" id="cat-nombre" placeholder="Nombre de la Cuenta" class="sm:col-span-2 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                            <select id="cat-grupo" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white">
+                                <option value="1">1 - Activo (Deudor)</option>
+                                <option value="2">2 - Pasivo (Acreedor)</option>
+                                <option value="3">3 - Capital (Acreedor)</option>
+                                <option value="4">4 - Ingreso (Acreedor)</option>
+                                <option value="5">5 - Costo (Deudor)</option>
+                                <option value="6">6 - Gasto (Deudor)</option>
+                            </select>
+                            <button onclick="agregarCuentaCatalogo()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg px-4 py-2 text-sm transition">
+                                <i class="fa-solid fa-plus mr-1"></i> Guardar Cuenta
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto bg-slate-900 rounded-xl border border-slate-700 p-4 max-h-[500px] overflow-y-auto">
+                        <table id="tabla-catalogo" class="w-full text-left text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-700 text-slate-400 text-xs uppercase">
+                                    <th class="py-2.5 px-3">Código</th>
+                                    <th class="py-2.5 px-3">Nombre de la Cuenta</th>
+                                    <th class="py-2.5 px-3">Grupo Contable</th>
+                                    <th class="py-2.5 px-3">Origen / Naturaleza</th>
+                                    <th class="py-2.5 px-3">Palabras Clave Asociadas</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-catalogo" class="divide-y divide-slate-800"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!-- MÓDULO 1: LIBRO DIARIO -->
             <div id="modulo-asientos" class="module-content space-y-6">
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
-                    <h2 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
-                        <i class="fa-solid fa-file-invoice-dollar text-blue-400"></i> Generador Inteligente de Asientos Contables
-                    </h2>
-                    <p class="text-slate-400 text-sm mb-4">Escribe la transacción comercial en lenguaje natural. El sistema identificará las cuentas, su origen (Deudor/Acreedor) y aplicará la partida doble en tu cuenta privada.</p>
-                    <div class="space-y-4">
+                    <div class="flex flex-wrap justify-between items-center gap-2 mb-2">
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-file-invoice-dollar text-blue-400"></i> Generador de Asientos Contables (Vinculado al Catálogo)
+                        </h2>
+                        <button onclick="toggleModoManual()" class="text-xs bg-slate-700 hover:bg-slate-600 text-blue-300 px-3 py-1.5 rounded-lg font-semibold transition">
+                            <i class="fa-solid fa-sliders mr-1"></i> Armar Manualmente desde el Catálogo
+                        </button>
+                    </div>
+                    <p class="text-slate-400 text-sm mb-4">Escribe la transacción comercial. El motor analizará los montos, formas de pago e impuestos (ITBIS/IVA) usando las cuentas exactas de tu Catálogo.</p>
+
+                    <!-- MODO AUTOMÁTICO POR ENUNCIADO -->
+                    <div id="modo-automatico-box" class="space-y-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Enunciado de la Transacción</label>
-                            <textarea id="input-enunciado" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-white focus:outline-none focus:border-blue-500 text-sm" placeholder="Ej. Aporte de capital de los socios por $200,000 en efectivo. / Compra de mercancía por $50,000 pagando 50% con banco y 50% a crédito."></textarea>
+                            <textarea id="input-enunciado" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-white focus:outline-none focus:border-blue-500 text-sm" placeholder="Ej. Se compra mercancía por $100,000 más 18% de ITBIS, pagando 50% con transferencia bancaria y 50% a crédito."></textarea>
                         </div>
                         <div class="flex flex-wrap justify-between items-center gap-3">
                             <span class="text-xs text-slate-400"><i class="fa-solid fa-bolt text-yellow-400 mr-1"></i> Costo: 2 créditos por asiento</span>
                             <div class="flex gap-2">
                                 <button onclick="limpiarInputAsiento()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold px-4 py-3 rounded-xl transition text-sm">
-                                    <i class="fa-solid fa-eraser mr-1"></i> Nuevo / Limpiar
+                                    <i class="fa-solid fa-eraser mr-1"></i> Limpiar
                                 </button>
                                 <button onclick="generarAsiento()" id="btn-generar" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg flex items-center gap-2 text-sm">
-                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Generar Asiento
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Generar Asiento con Catálogo
                                 </button>
                             </div>
                         </div>
                     </div>
+
+                    <!-- MODO MANUAL CON SELECTOR DEL CATÁLOGO -->
+                    <div id="modo-manual-box" class="hidden space-y-4 mt-4 pt-4 border-t border-slate-700">
+                        <h4 class="text-sm font-bold text-blue-400">Selección Directa del Catálogo de Cuentas</h4>
+                        <input type="text" id="manual-glosa" placeholder="Descripción o Glosa de la transacción..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white">
+                        <div id="lineas-manuales" class="space-y-2"></div>
+                        <div class="flex flex-wrap justify-between gap-2">
+                            <button onclick="agregarLineaManual()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-2 rounded-lg font-semibold">
+                                <i class="fa-solid fa-plus mr-1"></i> Agregar Cuenta
+                            </button>
+                            <button onclick="guardarAsientoManual()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-5 py-2.5 rounded-xl font-semibold">
+                                <i class="fa-solid fa-check mr-1"></i> Registrar en Libro Diario (2 Cr)
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
+                <!-- Tabla Libro Diario -->
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
                     <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
                         <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-book-journal-whills text-blue-400 mr-2"></i> Libro Diario General (Tus Registros)</h3>
@@ -163,7 +238,7 @@
                                     <th class="py-3 px-3">Fecha</th>
                                     <th class="py-3 px-3">Código</th>
                                     <th class="py-3 px-3">Naturaleza</th>
-                                    <th class="py-3 px-3">Cuenta Contable y Detalle</th>
+                                    <th class="py-3 px-3">Cuenta del Catálogo y Detalle</th>
                                     <th class="py-3 px-3 text-right">Débito ($)</th>
                                     <th class="py-3 px-3 text-right">Crédito ($)</th>
                                     <th class="py-3 px-3 text-center">Acción</th>
@@ -182,7 +257,7 @@
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl flex justify-between items-center flex-wrap gap-4">
                     <div>
                         <h2 class="text-xl font-bold text-white mb-1"><i class="fa-solid fa-book text-blue-400 mr-2"></i> Mayor General</h2>
-                        <p class="text-slate-400 text-sm">Movimientos por cuenta con Fecha, Débito, Crédito y Saldo según su naturaleza contable.</p>
+                        <p class="text-slate-400 text-sm">Movimientos por cuenta con Fecha, Débito, Crédito y Saldo según su naturaleza en el Catálogo.</p>
                     </div>
                     <div class="flex flex-wrap gap-2">
                         <button onclick="limpiarVistaModulo('mayor')" class="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/30 px-4 py-2.5 rounded-xl text-sm font-semibold transition flex items-center gap-2">
@@ -217,7 +292,7 @@
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl flex justify-between items-center flex-wrap gap-4">
                     <div>
                         <h2 class="text-xl font-bold text-white mb-1"><i class="fa-solid fa-scale-balanced text-blue-400 mr-2"></i> Balanza de Comprobación</h2>
-                        <p class="text-slate-400 text-sm">Muestra la igualdad de Movimientos (Débito = Crédito) y Saldos (Deudor = Acreedor) respetando el origen de cada cuenta.</p>
+                        <p class="text-slate-400 text-sm">Muestra la igualdad de Movimientos (Débito = Crédito) y Saldos (Deudor = Acreedor) según el Catálogo de Cuentas.</p>
                     </div>
                     <div class="flex flex-wrap gap-2">
                         <button onclick="limpiarVistaModulo('balanza')" class="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/30 px-4 py-2.5 rounded-xl text-sm font-semibold transition flex items-center gap-2">
@@ -266,7 +341,7 @@
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl flex justify-between items-center flex-wrap gap-4">
                     <div>
                         <h2 class="text-xl font-bold text-white mb-1"><i class="fa-solid fa-chart-pie text-blue-400 mr-2"></i> Estados Financieros</h2>
-                        <p class="text-slate-400 text-sm">Genera el Estado de Resultados (Ingresos, Costos y Gastos) y el Balance General (Activos, Pasivos y Capital) desde tus asientos.</p>
+                        <p class="text-slate-400 text-sm">Genera el Estado de Resultados (Ingresos, Costos y Gastos) y el Balance General (Activos, Pasivos y Capital).</p>
                     </div>
                     <div class="flex flex-wrap gap-2">
                         <button onclick="limpiarVistaModulo('eeff')" class="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/30 px-4 py-2.5 rounded-xl text-sm font-semibold transition flex items-center gap-2">
@@ -303,9 +378,9 @@
             <div id="modulo-ayuda" class="module-content hidden space-y-6">
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
                     <h2 class="text-xl font-bold text-white mb-2"><i class="fa-solid fa-circle-question text-blue-400 mr-2"></i> Asistente de Ayuda Contable</h2>
-                    <p class="text-slate-400 text-sm mb-4">Consulta el origen, naturaleza y dinámica de cualquier cuenta contable o principio de partida doble. Costo: <strong>1 crédito por consulta</strong>.</p>
+                    <p class="text-slate-400 text-sm mb-4">Consulta el origen, naturaleza y dinámica de cualquier cuenta del Catálogo. Costo: <strong>1 crédito por consulta</strong>.</p>
                     <div class="space-y-4">
-                        <textarea id="input-pregunta-ayuda" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-white focus:outline-none focus:border-blue-500 text-sm" placeholder="Ej. ¿Cuál es el origen y naturaleza de las cuentas de Activo, Pasivo, Capital, Ingresos, Costos y Gastos?"></textarea>
+                        <textarea id="input-pregunta-ayuda" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-white focus:outline-none focus:border-blue-500 text-sm" placeholder="Ej. ¿Cuándo se debita y cuándo se acredita el ITBIS o las Cuentas por Pagar?"></textarea>
                         <button onclick="consultarAyudaContable()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg">Consultar Asistente (1 Cr)</button>
                     </div>
                 </div>
@@ -368,16 +443,296 @@
         let authMode = 'login';
         let listaAsientosGlobal = [];
 
+        // CATÁLOGO DE CUENTAS OFICIAL BASE (Estructurado por grupos 1 al 6)
+        let CATALOGO_CUENTAS = [
+            // 1 - ACTIVOS (Deudor)
+            { codigo: "1-1-01", cuenta: "Efectivo en Caja y Bancos", tipo: "Activo", origen: "Deudor", keywords: ["efectivo", "banco", "transferencia", "cheque", "contado", "caja", "deposit"] },
+            { codigo: "1-1-02", cuenta: "Cuentas por Cobrar Clientes", tipo: "Activo", origen: "Deudor", keywords: ["cobrar", "cliente"] },
+            { codigo: "1-1-03", cuenta: "Inventario de Mercancías", tipo: "Activo", origen: "Deudor", keywords: ["mercancía", "mercancia", "inventario", "producto"] },
+            { codigo: "1-1-04", cuenta: "ITBIS / IVA Adelantado en Compras", tipo: "Activo", origen: "Deudor", keywords: ["itbis", "iva", "impuesto"] },
+            { codigo: "1-1-05", cuenta: "Suministros y Materiales de Oficina", tipo: "Activo", origen: "Deudor", keywords: ["papeleria", "papelería", "suministro", "materiales de oficina"] },
+            { codigo: "1-1-06", cuenta: "Gastos Pagados por Anticipado (Seguros/Alquiler)", tipo: "Activo", origen: "Deudor", keywords: ["anticipado", "póliza", "poliza", "seguro"] },
+            { codigo: "1-2-01", cuenta: "Terrenos y Edificaciones", tipo: "Activo", origen: "Deudor", keywords: ["terreno", "edificio", "local"] },
+            { codigo: "1-2-02", cuenta: "Mobiliario y Equipo de Oficina", tipo: "Activo", origen: "Deudor", keywords: ["mobiliario", "mueble", "computadora", "equipo de oficina", "escritorio"] },
+            { codigo: "1-2-03", cuenta: "Equipos de Transporte / Vehículos", tipo: "Activo", origen: "Deudor", keywords: ["vehículo", "vehiculo", "camión", "camion", "transporte", "auto"] },
+            { codigo: "1-2-04", cuenta: "Maquinaria y Equipos", tipo: "Activo", origen: "Deudor", keywords: ["maquinaria", "equipo"] },
+
+            // 2 - PASIVOS (Acreedor)
+            { codigo: "2-1-01", cuenta: "Cuentas por Pagar Proveedores", tipo: "Pasivo", origen: "Acreedor", keywords: ["proveedor", "pagar", "crédito", "credito"] },
+            { codigo: "2-1-02", cuenta: "ITBIS / IVA por Pagar", tipo: "Pasivo", origen: "Acreedor", keywords: ["itbis por pagar", "iva por pagar"] },
+            { codigo: "2-1-03", cuenta: "Retenciones y Acumulaciones por Pagar", tipo: "Pasivo", origen: "Acreedor", keywords: ["retención", "retencion", "tss", "infotep", "isr"] },
+            { codigo: "2-1-04", cuenta: "Sueldos y Salarios por Pagar", tipo: "Pasivo", origen: "Acreedor", keywords: ["sueldo por pagar", "nómina por pagar"] },
+            { codigo: "2-2-01", cuenta: "Préstamos Bancarios por Pagar", tipo: "Pasivo", origen: "Acreedor", keywords: ["préstamo", "prestamo", "financiamiento", "pagaré", "pagare"] },
+
+            // 3 - CAPITAL (Acreedor)
+            { codigo: "3-1-01", cuenta: "Capital Social / Aportes", tipo: "Capital", origen: "Acreedor", keywords: ["capital", "aporte", "socio", "accionista"] },
+            { codigo: "3-1-02", cuenta: "Utilidades Retenidas / Acumuladas", tipo: "Capital", origen: "Acreedor", keywords: ["retenida", "acumulada", "reserva"] },
+
+            // 4 - INGRESOS (Acreedor)
+            { codigo: "4-1-01", cuenta: "Ingresos por Ventas de Mercancías", tipo: "Ingreso", origen: "Acreedor", keywords: ["venta", "vendió", "vendio", "mercancía vendida"] },
+            { codigo: "4-1-02", cuenta: "Ingresos por Servicios Prestados", tipo: "Ingreso", origen: "Acreedor", keywords: ["servicio prestado", "honorario", "asesoría", "facturó servicio"] },
+
+            // 5 - COSTOS (Deudor)
+            { codigo: "5-1-01", cuenta: "Costo de Ventas / Compras de Mercancías", tipo: "Costo", origen: "Deudor", keywords: ["costo de venta", "costo de la mercancía"] },
+
+            // 6 - GASTOS (Deudor)
+            { codigo: "6-1-01", cuenta: "Gastos de Sueldos y Salarios (Nómina)", tipo: "Gasto", origen: "Deudor", keywords: ["sueldo", "salario", "nómina", "nomina", "empleado"] },
+            { codigo: "6-1-02", cuenta: "Gastos de Alquiler / Arrendamiento", tipo: "Gasto", origen: "Deudor", keywords: ["alquiler", "renta", "arrendamiento"] },
+            { codigo: "6-1-03", cuenta: "Gastos de Servicios Públicos (Luz, Agua, Teléfono)", tipo: "Gasto", origen: "Deudor", keywords: ["luz", "electricidad", "agua", "teléfono", "telefono", "internet", "energía"] },
+            { codigo: "6-1-04", cuenta: "Gastos de Publicidad y Mercadeo", tipo: "Gasto", origen: "Deudor", keywords: ["publicidad", "anuncio", "marketing", "promoción"] },
+            { codigo: "6-1-05", cuenta: "Gastos Financieros y Comisiones Bancarias", tipo: "Gasto", origen: "Deudor", keywords: ["interés", "interes", "comisión bancaria", "cargo bancario"] },
+            { codigo: "6-1-06", cuenta: "Gastos Generales y Administrativos", tipo: "Gasto", origen: "Deudor", keywords: ["gasto", "mantenimiento", "reparación", "limpieza"] }
+        ];
+
+        // Cargar cuentas personalizadas guardadas en el navegador
+        const cuentasGuardadas = localStorage.getItem('contaplus_catalogo_custom');
+        if (cuentasGuardadas) {
+            try { CATALOGO_CUENTAS = JSON.parse(cuentasGuardadas); } catch(e) {}
+        }
+
         document.getElementById('report-date').innerText = "Fecha de emisión: " + new Date().toLocaleDateString();
 
-        // Determina el origen/naturaleza según el primer dígito del código contable:
-        // 1: Activo (Deudor), 2: Pasivo (Acreedor), 3: Capital (Acreedor), 4: Ingresos (Acreedor), 5: Costos (Deudor), 6: Gastos (Deudor)
-        function obtenerNaturalezaCuenta(codigo) {
+        function obtenerCuentaDelCatalogo(codigo) {
+            let encontrada = CATALOGO_CUENTAS.find(c => c.codigo === codigo);
+            if (encontrada) return encontrada;
             const prefijo = String(codigo).trim().charAt(0);
             if (prefijo === '1' || prefijo === '5' || prefijo === '6') {
-                return { origen: 'Deudor', tipo: prefijo === '1' ? 'Activo' : (prefijo === '5' ? 'Costo' : 'Gasto') };
+                return { codigo, cuenta: "Cuenta Contable", origen: 'Deudor', tipo: prefijo === '1' ? 'Activo' : (prefijo === '5' ? 'Costo' : 'Gasto') };
             }
-            return { origen: 'Acreedor', tipo: prefijo === '2' ? 'Pasivo' : (prefijo === '3' ? 'Capital' : 'Ingreso') };
+            return { codigo, cuenta: "Cuenta Contable", origen: 'Acreedor', tipo: prefijo === '2' ? 'Pasivo' : (prefijo === '3' ? 'Capital' : 'Ingreso') };
+        }
+
+        function renderizarCatalogo() {
+            const tbody = document.getElementById('tbody-catalogo');
+            let html = '';
+            CATALOGO_CUENTAS.sort((a,b) => a.codigo.localeCompare(b.codigo)).forEach(c => {
+                html += `
+                    <tr class="hover:bg-slate-800/40">
+                        <td class="py-2 px-3 font-mono text-xs text-blue-400 font-bold">${c.codigo}</td>
+                        <td class="py-2 px-3 font-medium text-white">${c.cuenta}</td>
+                        <td class="py-2 px-3 text-xs text-slate-300">${c.tipo}</td>
+                        <td class="py-2 px-3 text-xs">
+                            <span class="px-2 py-0.5 rounded-full ${c.origen === 'Deudor' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-blue-500/10 text-blue-400'}">${c.origen}</span>
+                        </td>
+                        <td class="py-2 px-3 text-xs text-slate-400">${(c.keywords || []).join(', ')}</td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function agregarCuentaCatalogo() {
+            const codigo = document.getElementById('cat-codigo').value.trim();
+            const nombre = document.getElementById('cat-nombre').value.trim();
+            const grupo = document.getElementById('cat-grupo').value;
+            if (!codigo || !nombre) return alert("Completa el código y el nombre de la cuenta.");
+
+            const mapaGrupo = {
+                '1': { tipo: 'Activo', origen: 'Deudor' },
+                '2': { tipo: 'Pasivo', origen: 'Acreedor' },
+                '3': { tipo: 'Capital', origen: 'Acreedor' },
+                '4': { tipo: 'Ingreso', origen: 'Acreedor' },
+                '5': { tipo: 'Costo', origen: 'Deudor' },
+                '6': { tipo: 'Gasto', origen: 'Deudor' }
+            };
+
+            CATALOGO_CUENTAS.push({
+                codigo,
+                cuenta: nombre,
+                tipo: mapaGrupo[grupo].tipo,
+                origen: mapaGrupo[grupo].origen,
+                keywords: nombre.toLowerCase().split(' ').filter(w => w.length > 3)
+            });
+
+            localStorage.setItem('contaplus_catalogo_custom', JSON.stringify(CATALOGO_CUENTAS));
+            document.getElementById('cat-codigo').value = '';
+            document.getElementById('cat-nombre').value = '';
+            renderizarCatalogo();
+            alert("¡Cuenta añadida exitosamente al Catálogo!");
+        }
+
+        // MOTOR INTELIGENTE QUE CONSTRUYE EL ASIENTO USANDO EL CATÁLOGO DE CUENTAS
+        function analizarEnunciadoConCatalogo(texto) {
+            let txt = texto.toLowerCase();
+
+            // 1. Extraer monto principal (ignorando porcentajes como 18% o 50%)
+            let textoSinPorcentajes = texto.replace(/\d+(\.\d+)?\s*%/g, '');
+            let matches = textoSinPorcentajes.match(/\$?\s*([\d,]+\.?\d*)/g);
+            let monto = 50000;
+            if (matches) {
+                for (let m of matches) {
+                    let val = parseFloat(m.replace(/[\$,\s]/g, ''));
+                    if (val > 0) { monto = val; break; }
+                }
+            }
+
+            // 2. Detectar si lleva ITBIS / IVA (18%)
+            let llevaImpuesto = txt.includes('itbis') || txt.includes('iva') || txt.includes('impuesto') || txt.includes('18%');
+            let impuesto = llevaImpuesto ? +(monto * 0.18).toFixed(2) : 0;
+            let totalOperacion = monto + impuesto;
+
+            // 3. Detectar proporción de pago (Contado / Crédito / Mixto)
+            let porcentajeContado = 1;
+            if (txt.includes('50%')) {
+                porcentajeContado = 0.5;
+            } else if ((txt.includes('crédito') || txt.includes('credito')) && !(txt.includes('efectivo') || txt.includes('banco') || txt.includes('transferencia') || txt.includes('cheque'))) {
+                porcentajeContado = 0;
+            }
+
+            let montoContado = +(totalOperacion * porcentajeContado).toFixed(2);
+            let montoCredito = +(totalOperacion - montoContado).toFixed(2);
+
+            let asiento = [];
+
+            // CASO A: APORTE DE CAPITAL
+            if (txt.includes('capital') || txt.includes('aporte') || txt.includes('socio')) {
+                asiento.push({ codigo: "1-1-01", cuenta: buscarNombreCatalogo("1-1-01"), debito: monto, credito: 0 });
+                asiento.push({ codigo: "3-1-01", cuenta: buscarNombreCatalogo("3-1-01"), debito: 0, credito: monto });
+                return asiento;
+            }
+
+            // CASO B: PRÉSTAMO BANCARIO RECIBIDO
+            if (txt.includes('préstamo') || txt.includes('prestamo') || txt.includes('financiamiento')) {
+                asiento.push({ codigo: "1-1-01", cuenta: buscarNombreCatalogo("1-1-01"), debito: monto, credito: 0 });
+                asiento.push({ codigo: "2-2-01", cuenta: buscarNombreCatalogo("2-2-01"), debito: 0, credito: monto });
+                return asiento;
+            }
+
+            // CASO C: ABONO O PAGO A PROVEEDORES
+            if ((txt.includes('abona') || txt.includes('paga') || txt.includes('salda')) && (txt.includes('proveedor') || txt.includes('deuda') || txt.includes('cuenta por pagar'))) {
+                asiento.push({ codigo: "2-1-01", cuenta: buscarNombreCatalogo("2-1-01"), debito: monto, credito: 0 });
+                asiento.push({ codigo: "1-1-01", cuenta: buscarNombreCatalogo("1-1-01"), debito: 0, credito: monto });
+                return asiento;
+            }
+
+            // CASO D: COBRO A CLIENTES
+            if ((txt.includes('cobra') || txt.includes('recibe pago')) && (txt.includes('cliente') || txt.includes('cuenta por cobrar'))) {
+                asiento.push({ codigo: "1-1-01", cuenta: buscarNombreCatalogo("1-1-01"), debito: monto, credito: 0 });
+                asiento.push({ codigo: "1-1-02", cuenta: buscarNombreCatalogo("1-1-02"), debito: 0, credito: monto });
+                return asiento;
+            }
+
+            // CASO E: VENTAS O INGRESOS POR SERVICIOS
+            if (txt.includes('venta') || txt.includes('vende') || txt.includes('vendió') || txt.includes('servicio prestado') || txt.includes('honorario')) {
+                let codIngreso = (txt.includes('servicio') || txt.includes('honorario')) ? "4-1-02" : "4-1-01";
+                if (montoContado > 0) asiento.push({ codigo: "1-1-01", cuenta: buscarNombreCatalogo("1-1-01"), debito: montoContado, credito: 0 });
+                if (montoCredito > 0) asiento.push({ codigo: "1-1-02", cuenta: buscarNombreCatalogo("1-1-02"), debito: montoCredito, credito: 0 });
+                asiento.push({ codigo: codIngreso, cuenta: buscarNombreCatalogo(codIngreso), debito: 0, credito: monto });
+                if (impuesto > 0) asiento.push({ codigo: "2-1-02", cuenta: buscarNombreCatalogo("2-1-02"), debito: 0, credito: impuesto });
+                return asiento;
+            }
+
+            // CASO F: COSTO DE VENTAS
+            if (txt.includes('costo de venta') || txt.includes('costo de la mercancía')) {
+                asiento.push({ codigo: "5-1-01", cuenta: buscarNombreCatalogo("5-1-01"), debito: monto, credito: 0 });
+                asiento.push({ codigo: "1-1-03", cuenta: buscarNombreCatalogo("1-1-03"), debito: 0, credito: monto });
+                return asiento;
+            }
+
+            // CASO G: COMPRAS DE ACTIVOS, INVENTARIOS O GASTOS (Búsqueda en el Catálogo)
+            let codCuentaDebito = "1-1-03"; // Por defecto Inventario de Mercancías
+            if (txt.includes('terreno') || txt.includes('edificio') || txt.includes('local')) codCuentaDebito = "1-2-01";
+            else if (txt.includes('mobiliario') || txt.includes('mueble') || txt.includes('computadora') || txt.includes('escritorio')) codCuentaDebito = "1-2-02";
+            else if (txt.includes('vehículo') || txt.includes('vehiculo') || txt.includes('camión') || txt.includes('transporte')) codCuentaDebito = "1-2-03";
+            else if (txt.includes('maquinaria')) codCuentaDebito = "1-2-04";
+            else if (txt.includes('papelería') || txt.includes('papeleria') || txt.includes('suministro')) codCuentaDebito = "1-1-05";
+            else if (txt.includes('seguro') || txt.includes('anticipado')) codCuentaDebito = "1-1-06";
+            else if (txt.includes('sueldo') || txt.includes('salario') || txt.includes('nómina') || txt.includes('nomina')) codCuentaDebito = "6-1-01";
+            else if (txt.includes('alquiler') || txt.includes('renta') || txt.includes('arrendamiento')) codCuentaDebito = "6-1-02";
+            else if (txt.includes('luz') || txt.includes('agua') || txt.includes('teléfono') || txt.includes('internet') || txt.includes('electricidad')) codCuentaDebito = "6-1-03";
+            else if (txt.includes('publicidad') || txt.includes('marketing')) codCuentaDebito = "6-1-04";
+            else if (txt.includes('interés') || txt.includes('comisión bancaria')) codCuentaDebito = "6-1-05";
+            else if (txt.includes('gasto') || txt.includes('mantenimiento') || txt.includes('limpieza')) codCuentaDebito = "6-1-06";
+            else {
+                // Buscar coincidencia en cuentas personalizadas agregadas por el usuario
+                for (let c of CATALOGO_CUENTAS) {
+                    if ((c.keywords || []).some(k => k && txt.includes(k.toLowerCase()))) {
+                        codCuentaDebito = c.codigo;
+                        break;
+                    }
+                }
+            }
+
+            asiento.push({ codigo: codCuentaDebito, cuenta: buscarNombreCatalogo(codCuentaDebito), debito: monto, credito: 0 });
+            if (impuesto > 0) {
+                asiento.push({ codigo: "1-1-04", cuenta: buscarNombreCatalogo("1-1-04"), debito: impuesto, credito: 0 });
+            }
+            if (montoContado > 0) {
+                asiento.push({ codigo: "1-1-01", cuenta: buscarNombreCatalogo("1-1-01"), debito: 0, credito: montoContado });
+            }
+            if (montoCredito > 0) {
+                asiento.push({ codigo: "2-1-01", cuenta: buscarNombreCatalogo("2-1-01"), debito: 0, credito: montoCredito });
+            }
+            return asiento;
+        }
+
+        function buscarNombreCatalogo(codigo) {
+            let item = CATALOGO_CUENTAS.find(c => c.codigo === codigo);
+            return item ? item.cuenta : "Cuenta Contable";
+        }
+
+        // MODO MANUAL DESDE CATÁLOGO
+        function toggleModoManual() {
+            const box = document.getElementById('modo-manual-box');
+            box.classList.toggle('hidden');
+            if (!box.classList.contains('hidden') && document.getElementById('lineas-manuales').children.length === 0) {
+                agregarLineaManual();
+                agregarLineaManual();
+            }
+        }
+
+        function agregarLineaManual() {
+            const container = document.getElementById('lineas-manuales');
+            let opciones = CATALOGO_CUENTAS.map(c => `<option value="${c.codigo}">${c.codigo} - ${c.cuenta} (${c.origen})</option>`).join('');
+            const div = document.createElement('div');
+            div.className = "grid grid-cols-1 sm:grid-cols-4 gap-2 items-center";
+            div.innerHTML = `
+                <select class="manual-select sm:col-span-2 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">${opciones}</select>
+                <input type="number" step="0.01" placeholder="Débito ($)" class="manual-debito bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+                <input type="number" step="0.01" placeholder="Crédito ($)" class="manual-credito bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+            `;
+            container.appendChild(div);
+        }
+
+        async function guardarAsientoManual() {
+            const glosa = document.getElementById('manual-glosa').value.trim() || "Registro contable desde catálogo";
+            const selects = document.querySelectorAll('.manual-select');
+            const debitos = document.querySelectorAll('.manual-debito');
+            const creditos = document.querySelectorAll('.manual-credito');
+
+            let cuentas = [];
+            let totalD = 0, totalC = 0;
+
+            for (let i = 0; i < selects.length; i++) {
+                let d = parseFloat(debitos[i].value) || 0;
+                let c = parseFloat(creditos[i].value) || 0;
+                if (d > 0 || c > 0) {
+                    let cod = selects[i].value;
+                    cuentas.push({ codigo: cod, cuenta: buscarNombreCatalogo(cod), debito: d, credito: c });
+                    totalD += d;
+                    totalC += c;
+                }
+            }
+
+            if (cuentas.length < 2) return alert("Debes ingresar al menos 2 cuentas con movimiento.");
+            if (Math.abs(totalD - totalC) > 0.01) return alert(`El asiento no cuadra: Débitos ($${totalD}) vs Créditos ($${totalC}).`);
+            if (!await descontarCreditos(2)) return;
+
+            await supabaseClient.from('contaplus_asientos').insert([{
+                user_email: currentUser.email,
+                fecha: new Date().toISOString().split('T')[0],
+                enunciado: glosa,
+                glosa: "Para registrar: " + glosa,
+                cuentas: cuentas,
+                total_debito: totalD,
+                total_credito: totalC
+            }]);
+
+            document.getElementById('manual-glosa').value = "";
+            document.getElementById('lineas-manuales').innerHTML = "";
+            agregarLineaManual();
+            agregarLineaManual();
+            cargarAsientosDelUsuario();
         }
 
         function switchTab(mode) {
@@ -448,6 +803,7 @@
                 document.getElementById('user-role-badge').className = "ml-2 px-2 py-0.5 text-xs bg-slate-700 text-blue-300 rounded-full";
                 document.getElementById('btn-modulo-admin').classList.add('hidden');
             }
+            renderizarCatalogo();
             limpiarVistaModulo('mayor', false);
             limpiarVistaModulo('balanza', false);
             limpiarVistaModulo('eeff', false);
@@ -473,6 +829,7 @@
                 activeBtn.className = activeBtn.id.includes('admin') ? "nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-amber-600 text-white" : "nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-blue-600 text-white";
             }
             if(moduleId === 'modulo-admin') cargarUsuariosAdmin();
+            if(moduleId === 'modulo-catalogo') renderizarCatalogo();
         }
 
         async function descontarCreditos(cantidad) {
@@ -498,7 +855,7 @@
             if (!enunciado) return alert("Escribe la transacción contable.");
             if (!await descontarCreditos(2)) return;
 
-            let cuentas = analizarEnunciado(enunciado);
+            let cuentas = analizarEnunciadoConCatalogo(enunciado);
             let totalD = cuentas.reduce((s, c) => s + c.debito, 0);
             let totalC = cuentas.reduce((s, c) => s + c.credito, 0);
 
@@ -514,81 +871,6 @@
 
             document.getElementById('input-enunciado').value = "";
             cargarAsientosDelUsuario();
-        }
-
-        function analizarEnunciado(texto) {
-            let txt = texto.toLowerCase();
-            let monto = 50000;
-            let matches = texto.match(/\$?\s*([\d,]+\.?\d*)/g);
-            if (matches) {
-                for (let m of matches) {
-                    let val = parseFloat(m.replace(/[\$,\s]/g, ''));
-                    if (val > 100) { monto = val; break; }
-                }
-            }
-
-            if (txt.includes('capital') || txt.includes('aporte') || txt.includes('socio')) {
-                return [
-                    { codigo: "1-1-01", cuenta: "Efectivo Caja y Bancos", debito: monto, credito: 0 },
-                    { codigo: "3-1-01", cuenta: "Capital Social", debito: 0, credito: monto }
-                ];
-            } else if (txt.includes('compra') && (txt.includes('mercanc') || txt.includes('inventario'))) {
-                if (txt.includes('50%') || (txt.includes('crédito') && (txt.includes('banco') || txt.includes('efectivo') || txt.includes('transferencia')))) {
-                    let mitad = monto / 2;
-                    return [
-                        { codigo: "1-1-03", cuenta: "Inventario de Mercancías", debito: monto, credito: 0 },
-                        { codigo: "1-1-01", cuenta: "Efectivo Caja y Bancos", debito: 0, credito: mitad },
-                        { codigo: "2-1-01", cuenta: "Cuentas por Pagar Proveedores", debito: 0, credito: mitad }
-                    ];
-                } else if (txt.includes('crédito') || txt.includes('credito')) {
-                    return [
-                        { codigo: "1-1-03", cuenta: "Inventario de Mercancías", debito: monto, credito: 0 },
-                        { codigo: "2-1-01", cuenta: "Cuentas por Pagar Proveedores", debito: 0, credito: monto }
-                    ];
-                } else {
-                    return [
-                        { codigo: "1-1-03", cuenta: "Inventario de Mercancías", debito: monto, credito: 0 },
-                        { codigo: "1-1-01", cuenta: "Efectivo Caja y Bancos", debito: 0, credito: monto }
-                    ];
-                }
-            } else if (txt.includes('venta') || txt.includes('vend')) {
-                if (txt.includes('crédito') || txt.includes('credito')) {
-                    return [
-                        { codigo: "1-1-02", cuenta: "Cuentas por Cobrar Clientes", debito: monto, credito: 0 },
-                        { codigo: "4-1-01", cuenta: "Ingresos por Ventas", debito: 0, credito: monto }
-                    ];
-                } else {
-                    return [
-                        { codigo: "1-1-01", cuenta: "Efectivo Caja y Bancos", debito: monto, credito: 0 },
-                        { codigo: "4-1-01", cuenta: "Ingresos por Ventas", debito: 0, credito: monto }
-                    ];
-                }
-            } else if (txt.includes('costo')) {
-                return [
-                    { codigo: "5-1-01", cuenta: "Costo de Ventas", debito: monto, credito: 0 },
-                    { codigo: "1-1-03", cuenta: "Inventario de Mercancías", debito: 0, credito: monto }
-                ];
-            } else if (txt.includes('gasto') || txt.includes('alquiler') || txt.includes('sueldo') || txt.includes('nómina') || txt.includes('luz') || txt.includes('servicio')) {
-                return [
-                    { codigo: "6-1-01", cuenta: "Gastos Operativos y Administrativos", debito: monto, credito: 0 },
-                    { codigo: "1-1-01", cuenta: "Efectivo Caja y Bancos", debito: 0, credito: monto }
-                ];
-            } else if (txt.includes('préstamo') || txt.includes('prestamo')) {
-                return [
-                    { codigo: "1-1-01", cuenta: "Efectivo Caja y Bancos", debito: monto, credito: 0 },
-                    { codigo: "2-2-01", cuenta: "Préstamos Bancarios por Pagar", debito: 0, credito: monto }
-                ];
-            } else if (txt.includes('equipo') || txt.includes('mobiliario') || txt.includes('vehículo') || txt.includes('maquinaria')) {
-                return [
-                    { codigo: "1-2-01", cuenta: "Propiedad, Planta y Equipo", debito: monto, credito: 0 },
-                    { codigo: "1-1-01", cuenta: "Efectivo Caja y Bancos", debito: 0, credito: monto }
-                ];
-            } else {
-                return [
-                    { codigo: "1-1-03", cuenta: "Inventario / Activos", debito: monto, credito: 0 },
-                    { codigo: "1-1-01", cuenta: "Efectivo Caja y Bancos", debito: 0, credito: monto }
-                ];
-            }
         }
 
         async function cargarAsientosDelUsuario() {
@@ -620,14 +902,14 @@
                     </tr>
                 `;
                 asiento.cuentas.forEach((c) => {
-                    let infoNat = obtenerNaturalezaCuenta(c.codigo);
+                    let infoNat = obtenerCuentaDelCatalogo(c.codigo);
                     let indent = c.credito > 0 ? 'pl-8' : '';
                     granTotalD += Number(c.debito || 0);
                     granTotalC += Number(c.credito || 0);
                     html += `
                         <tr class="hover:bg-slate-800/40">
                             <td class="py-2 px-3 text-slate-400 text-xs">${asiento.fecha}</td>
-                            <td class="py-2 px-3 font-mono text-xs text-slate-300">${c.codigo}</td>
+                            <td class="py-2 px-3 font-mono text-xs text-blue-400 font-semibold">${c.codigo}</td>
                             <td class="py-2 px-3 text-xs">
                                 <span class="px-2 py-0.5 rounded-full text-[11px] ${infoNat.origen === 'Deudor' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-blue-500/10 text-blue-400'}">${infoNat.tipo} (${infoNat.origen})</span>
                             </td>
@@ -663,7 +945,7 @@
             document.getElementById('detalle-enunciado').innerHTML = `<strong>Transacción:</strong> ${asiento.enunciado}<br><span class="text-xs text-slate-400"><strong>Glosa:</strong> Para registrar ${asiento.enunciado}</span>`;
             let htmlCuentas = '';
             asiento.cuentas.forEach(c => {
-                let nat = obtenerNaturalezaCuenta(c.codigo);
+                let nat = obtenerCuentaDelCatalogo(c.codigo);
                 htmlCuentas += `<div class="flex justify-between border-b border-slate-700 py-1.5"><span>${c.codigo} - ${c.cuenta} (${nat.origen})</span><span>D: $${Number(c.debito).toLocaleString()} | C: $${Number(c.credito).toLocaleString()}</span></div>`;
             });
             document.getElementById('detalle-cuentas').innerHTML = htmlCuentas;
@@ -677,7 +959,7 @@
         }
 
         async function eliminarTodosLosAsientos() {
-            if (!confirm("¿Estás seguro de que deseas eliminar TODOS tus asientos contables? Esta acción borrará tus datos para iniciar una práctica en blanco.")) return;
+            if (!confirm("¿Estás seguro de que deseas eliminar TODOS tus asientos contables?")) return;
             await supabaseClient.from('contaplus_asientos').delete().eq('user_email', currentUser.email);
             cargarAsientosDelUsuario();
             limpiarVistaModulo('mayor', false);
@@ -697,265 +979,5 @@
             }
         }
 
-        // MAYOR GENERAL RESPETANDO NATURALEZA DE LA CUENTA
         async function cargarMayorGeneral() {
-            if (listaAsientosGlobal.length === 0) return alert("No tienes asientos en el Libro Diario para mayorizar.");
-            if (!await descontarCreditos(3)) return;
-
-            let map = {};
-            listaAsientosGlobal.forEach(a => a.cuentas.forEach(c => {
-                if (!map[c.codigo]) map[c.codigo] = { codigo: c.codigo, nombre: c.cuenta, movimientos: [] };
-                map[c.codigo].movimientos.push({ fecha: a.fecha, detalle: a.enunciado, debito: Number(c.debito || 0), credito: Number(c.credito || 0) });
-            }));
-
-            let html = '';
-            let exportRows = `<tr><th>Cuenta</th><th>Origen</th><th>Fecha</th><th>Débito</th><th>Crédito</th><th>Saldo</th></tr>`;
-
-            Object.values(map).sort((a,b) => a.codigo.localeCompare(b.codigo)).forEach(cta => {
-                let nat = obtenerNaturalezaCuenta(cta.codigo);
-                let saldoAcumulado = 0;
-
-                html += `
-                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 mb-4">
-                        <div class="flex justify-between items-center mb-3 border-b border-slate-700 pb-2">
-                            <h5 class="font-bold text-white text-sm"><span class="text-blue-400 font-mono">${cta.codigo}</span> - ${cta.nombre}</h5>
-                            <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300">Naturaleza / Origen: <strong class="${nat.origen === 'Deudor' ? 'text-emerald-400' : 'text-blue-400'}">${nat.origen} (${nat.tipo})</strong></span>
-                        </div>
-                        <table class="w-full text-xs font-mono">
-                            <thead>
-                                <tr class="text-slate-400 border-b border-slate-700">
-                                    <th class="py-1.5 text-left">Fecha</th>
-                                    <th class="py-1.5 text-right">Débito ($)</th>
-                                    <th class="py-1.5 text-right">Crédito ($)</th>
-                                    <th class="py-1.5 text-right">Saldo ($)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-800">
-                `;
-                cta.movimientos.forEach(m => {
-                    // Si es de origen Deudor (Activo, Costo, Gasto): Saldo += Débito - Crédito
-                    // Si es de origen Acreedor (Pasivo, Capital, Ingreso): Saldo += Crédito - Débito
-                    if (nat.origen === 'Deudor') {
-                        saldoAcumulado += (m.debito - m.credito);
-                    } else {
-                        saldoAcumulado += (m.credito - m.debito);
-                    }
-                    html += `
-                        <tr>
-                            <td class="py-1.5 text-slate-400">${m.fecha}</td>
-                            <td class="py-1.5 text-right text-slate-200">${m.debito > 0 ? m.debito.toLocaleString('en-US', {minimumFractionDigits: 2}) : '-'}</td>
-                            <td class="py-1.5 text-right text-slate-200">${m.credito > 0 ? m.credito.toLocaleString('en-US', {minimumFractionDigits: 2}) : '-'}</td>
-                            <td class="py-1.5 text-right font-bold text-emerald-400">${saldoAcumulado.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
-                        </tr>
-                    `;
-                    exportRows += `<tr><td>${cta.codigo} - ${cta.nombre}</td><td>${nat.origen}</td><td>${m.fecha}</td><td>${m.debito}</td><td>${m.credito}</td><td>${saldoAcumulado}</td></tr>`;
-                });
-                html += `</tbody></table></div>`;
-            });
-
-            document.getElementById('container-mayor').innerHTML = html;
-            document.getElementById('tabla-mayor-export').innerHTML = exportRows;
-        }
-
-        // BALANZA DE COMPROBACIÓN CON ORIGEN Y NATURALEZA EXACTA
-        async function cargarBalanza() {
-            if (listaAsientosGlobal.length === 0) return alert("No tienes asientos registrados para generar la Balanza.");
-            if (!await descontarCreditos(4)) return;
-
-            let map = {};
-            listaAsientosGlobal.forEach(a => a.cuentas.forEach(c => {
-                if (!map[c.codigo]) map[c.codigo] = { codigo: c.codigo, nombre: c.cuenta, debito: 0, credito: 0 };
-                map[c.codigo].debito += Number(c.debito || 0);
-                map[c.codigo].credito += Number(c.credito || 0);
-            }));
-
-            let html = '';
-            let totalMovDebito = 0, totalMovCredito = 0;
-            let totalSaldoDeudor = 0, totalSaldoAcreedor = 0;
-
-            Object.values(map).sort((a,b) => a.codigo.localeCompare(b.codigo)).forEach(c => {
-                let nat = obtenerNaturalezaCuenta(c.codigo);
-                totalMovDebito += c.debito;
-                totalMovCredito += c.credito;
-
-                let saldoDeudor = 0;
-                let saldoAcreedor = 0;
-
-                if (c.debito > c.credito) {
-                    saldoDeudor = c.debito - c.credito;
-                } else if (c.credito > c.debito) {
-                    saldoAcreedor = c.credito - c.debito;
-                }
-
-                totalSaldoDeudor += saldoDeudor;
-                totalSaldoAcreedor += saldoAcreedor;
-
-                html += `
-                    <tr class="hover:bg-slate-800/40">
-                        <td class="py-2.5 px-3 font-mono text-xs text-blue-400">${c.codigo}</td>
-                        <td class="py-2.5 px-3 font-medium text-slate-200">${c.nombre}</td>
-                        <td class="py-2.5 px-3 text-center text-xs">
-                            <span class="px-2 py-0.5 rounded-full ${nat.origen === 'Deudor' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-blue-500/10 text-blue-400'}">${nat.origen} (${nat.tipo})</span>
-                        </td>
-                        <td class="py-2.5 px-3 text-right font-mono text-slate-300">${c.debito.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
-                        <td class="py-2.5 px-3 text-right font-mono text-slate-300">${c.credito.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
-                        <td class="py-2.5 px-3 text-right font-mono font-semibold text-emerald-400">${saldoDeudor > 0 ? saldoDeudor.toLocaleString('en-US', {minimumFractionDigits: 2}) : '0.00'}</td>
-                        <td class="py-2.5 px-3 text-right font-mono font-semibold text-blue-400">${saldoAcreedor > 0 ? saldoAcreedor.toLocaleString('en-US', {minimumFractionDigits: 2}) : '0.00'}</td>
-                    </tr>
-                `;
-            });
-
-            html += `
-                <tr class="border-t-2 border-slate-600 font-bold bg-slate-800">
-                    <td colspan="3" class="py-3 px-3 text-white">SUMAS IGUALES (IGUALDAD DE DÉBITOS Y CRÉDITOS)</td>
-                    <td class="py-3 px-3 text-right font-mono text-white">$${totalMovDebito.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
-                    <td class="py-3 px-3 text-right font-mono text-white">$${totalMovCredito.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
-                    <td class="py-3 px-3 text-right font-mono text-emerald-400">$${totalSaldoDeudor.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
-                    <td class="py-3 px-3 text-right font-mono text-blue-400">$${totalSaldoAcreedor.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
-                </tr>
-            `;
-            document.getElementById('tbody-balanza').innerHTML = html;
-        }
-
-        // ESTADOS FINANCIEROS CALCULADOS DESDE LOS ASIENTOS DEL USUARIO
-        async function cargarEstadosFinancieros() {
-            if (listaAsientosGlobal.length === 0) return alert("No tienes asientos registrados para generar los Estados Financieros.");
-            if (!await descontarCreditos(20)) return;
-
-            let map = {};
-            listaAsientosGlobal.forEach(a => a.cuentas.forEach(c => {
-                if (!map[c.codigo]) map[c.codigo] = { codigo: c.codigo, nombre: c.cuenta, debito: 0, credito: 0 };
-                map[c.codigo].debito += Number(c.debito || 0);
-                map[c.codigo].credito += Number(c.credito || 0);
-            }));
-
-            let totalIngresos = 0, totalCostos = 0, totalGastos = 0;
-            let totalActivos = 0, totalPasivos = 0, totalCapital = 0;
-            let htmlIngresos = '', htmlCostosGastos = '';
-            let htmlActivos = '', htmlPasivos = '', htmlCapital = '';
-
-            Object.values(map).sort((a,b) => a.codigo.localeCompare(b.codigo)).forEach(c => {
-                let nat = obtenerNaturalezaCuenta(c.codigo);
-                let saldo = nat.origen === 'Deudor' ? (c.debito - c.credito) : (c.credito - c.debito);
-
-                if (nat.tipo === 'Ingreso') {
-                    totalIngresos += saldo;
-                    htmlIngresos += `<div class="flex justify-between py-1 text-slate-300"><span>${c.codigo} - ${c.nombre}</span><span class="font-mono">$${saldo.toLocaleString('en-US', {minimumFractionDigits: 2})}</span></div>`;
-                } else if (nat.tipo === 'Costo') {
-                    totalCostos += saldo;
-                    htmlCostosGastos += `<div class="flex justify-between py-1 text-slate-300"><span>(-) ${c.codigo} - ${c.nombre}</span><span class="font-mono">$${saldo.toLocaleString('en-US', {minimumFractionDigits: 2})}</span></div>`;
-                } else if (nat.tipo === 'Gasto') {
-                    totalGastos += saldo;
-                    htmlCostosGastos += `<div class="flex justify-between py-1 text-slate-300"><span>(-) ${c.codigo} - ${c.nombre}</span><span class="font-mono">$${saldo.toLocaleString('en-US', {minimumFractionDigits: 2})}</span></div>`;
-                } else if (nat.tipo === 'Activo') {
-                    totalActivos += saldo;
-                    htmlActivos += `<div class="flex justify-between py-1 text-slate-300"><span>${c.codigo} - ${c.nombre}</span><span class="font-mono">$${saldo.toLocaleString('en-US', {minimumFractionDigits: 2})}</span></div>`;
-                } else if (nat.tipo === 'Pasivo') {
-                    totalPasivos += saldo;
-                    htmlPasivos += `<div class="flex justify-between py-1 text-slate-300"><span>${c.codigo} - ${c.nombre}</span><span class="font-mono">$${saldo.toLocaleString('en-US', {minimumFractionDigits: 2})}</span></div>`;
-                } else if (nat.tipo === 'Capital') {
-                    totalCapital += saldo;
-                    htmlCapital += `<div class="flex justify-between py-1 text-slate-300"><span>${c.codigo} - ${c.nombre}</span><span class="font-mono">$${saldo.toLocaleString('en-US', {minimumFractionDigits: 2})}</span></div>`;
-                }
-            });
-
-            let resultadoEjercicio = totalIngresos - totalCostos - totalGastos;
-
-            document.getElementById('content-estado-resultados').innerHTML = `
-                <div class="space-y-1 mb-3">
-                    <p class="text-xs font-bold uppercase text-emerald-400">Ingresos</p>
-                    ${htmlIngresos || '<p class="text-xs text-slate-500">Sin movimientos de ingresos ($0.00)</p>'}
-                    <div class="flex justify-between py-1.5 border-t border-slate-700 font-semibold text-white"><span>Total Ingresos:</span><span class="font-mono">$${totalIngresos.toLocaleString('en-US', {minimumFractionDigits: 2})}</span></div>
-                </div>
-                <div class="space-y-1 mb-3">
-                    <p class="text-xs font-bold uppercase text-rose-400">Costos y Gastos</p>
-                    ${htmlCostosGastos || '<p class="text-xs text-slate-500">Sin movimientos de costos o gastos ($0.00)</p>'}
-                    <div class="flex justify-between py-1.5 border-t border-slate-700 font-semibold text-white"><span>Total Costos y Gastos:</span><span class="font-mono">$${(totalCostos + totalGastos).toLocaleString('en-US', {minimumFractionDigits: 2})}</span></div>
-                </div>
-                <div class="flex justify-between py-3 font-bold text-white text-base bg-slate-900 px-4 rounded-xl">
-                    <span>UTILIDAD / RESULTADO DEL EJERCICIO:</span>
-                    <span class="font-mono ${resultadoEjercicio >= 0 ? 'text-emerald-400' : 'text-rose-400'}">$${resultadoEjercicio.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
-                </div>
-            `;
-
-            document.getElementById('content-balance-general').innerHTML = `
-                <div class="space-y-1 mb-4">
-                    <p class="text-xs font-bold uppercase text-blue-400">Activos (Origen Deudor)</p>
-                    ${htmlActivos || '<p class="text-xs text-slate-500">Sin activos registrados</p>'}
-                    <div class="flex justify-between py-2 border-t border-slate-700 font-bold text-white"><span>TOTAL ACTIVOS:</span><span class="font-mono text-emerald-400">$${totalActivos.toLocaleString('en-US', {minimumFractionDigits: 2})}</span></div>
-                </div>
-                <div class="space-y-1 mb-4">
-                    <p class="text-xs font-bold uppercase text-amber-400">Pasivos (Origen Acreedor)</p>
-                    ${htmlPasivos || '<p class="text-xs text-slate-500">Sin pasivos registrados ($0.00)</p>'}
-                    <div class="flex justify-between py-1.5 border-t border-slate-700 font-semibold text-white"><span>Total Pasivos:</span><span class="font-mono">$${totalPasivos.toLocaleString('en-US', {minimumFractionDigits: 2})}</span></div>
-                </div>
-                <div class="space-y-1 mb-4">
-                    <p class="text-xs font-bold uppercase text-purple-400">Capital Contable (Origen Acreedor)</p>
-                    ${htmlCapital || '<p class="text-xs text-slate-500">Sin capital inicial registrado ($0.00)</p>'}
-                    <div class="flex justify-between py-1 text-slate-300"><span>Resultado del Ejercicio (Utilidad/Pérdida):</span><span class="font-mono">$${resultadoEjercicio.toLocaleString('en-US', {minimumFractionDigits: 2})}</span></div>
-                    <div class="flex justify-between py-1.5 border-t border-slate-700 font-semibold text-white"><span>Total Capital Contable:</span><span class="font-mono">$${(totalCapital + resultadoEjercicio).toLocaleString('en-US', {minimumFractionDigits: 2})}</span></div>
-                </div>
-                <div class="flex justify-between py-3 font-bold text-white text-base bg-slate-900 px-4 rounded-xl">
-                    <span>TOTAL PASIVO + CAPITAL:</span>
-                    <span class="font-mono text-emerald-400">$${(totalPasivos + totalCapital + resultadoEjercicio).toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
-                </div>
-            `;
-        }
-
-        async function consultarAyudaContable() {
-            const pregunta = document.getElementById('input-pregunta-ayuda').value.trim();
-            if (!pregunta) return alert("Por favor escribe tu duda contable.");
-            if (!await descontarCreditos(1)) return;
-
-            let respuesta = "Guía de Origen y Naturaleza de las Cuentas Contables:\n" +
-                            "1. ACTIVOS (Código 1): Origen DEUDOR. Aumentan en el Débito y disminuyen en el Crédito.\n" +
-                            "2. PASIVOS (Código 2): Origen ACREEDOR. Aumentan en el Crédito y disminuyen en el Débito.\n" +
-                            "3. CAPITAL (Código 3): Origen ACREEDOR. Aumenta en el Crédito y disminuye en el Débito.\n" +
-                            "4. INGRESOS (Código 4): Origen ACREEDOR. Aumentan en el Crédito.\n" +
-                            "5. COSTOS Y GASTOS (Códigos 5 y 6): Origen DEUDOR. Aumentan en el Débito.";
-
-            document.getElementById('texto-respuesta-ayuda').innerText = respuesta;
-            document.getElementById('respuesta-ayuda-box').classList.remove('hidden');
-            document.getElementById('input-pregunta-ayuda').value = "";
-        }
-
-        async function cargarUsuariosAdmin() {
-            const { data } = await supabaseClient.from('contaplus_usuarios').select('*').order('id', { ascending: true });
-            let html = '';
-            (data || []).forEach(u => {
-                html += `
-                    <tr class="hover:bg-slate-800/40">
-                        <td class="py-3 px-3">${u.nombre}</td>
-                        <td class="py-3 px-3 text-slate-300">${u.email}</td>
-                        <td class="py-3 px-3 text-center font-bold text-yellow-400">${u.creditos}</td>
-                        <td class="py-3 px-3 text-right space-x-1">
-                            <button onclick="adminSumar('${u.email}', 10)" class="bg-blue-600 text-white text-xs px-2.5 py-1 rounded">+10 Cr</button>
-                            <button onclick="adminSumar('${u.email}', 25)" class="bg-emerald-600 text-white text-xs px-2.5 py-1 rounded">+25 Cr</button>
-                            <button onclick="adminSumar('${u.email}', 60)" class="bg-indigo-600 text-white text-xs px-2.5 py-1 rounded">+60 Cr</button>
-                            <button onclick="adminSumar('${u.email}', 100)" class="bg-purple-600 text-white text-xs px-2.5 py-1 rounded">+100 Cr</button>
-                        </td>
-                    </tr>
-                `;
-            });
-            document.getElementById('tbody-admin-users').innerHTML = html;
-        }
-
-        async function adminSumar(email, cant) {
-            const { data } = await supabaseClient.from('contaplus_usuarios').select('creditos').eq('email', email).single();
-            await supabaseClient.from('contaplus_usuarios').update({ creditos: data.creditos + cant }).eq('email', email);
-            alert(`¡Se han sumado ${cant} créditos a ${email}!`);
-            cargarUsuariosAdmin();
-        }
-
-        function comprarCreditos(paq, creds, precio) {
-            window.open(`https://wa.me/18299128890?text=` + encodeURIComponent(`Hola Lic. Miguel, pagué ${precio} USD por el *${paq}* (${creds} créditos). Mi correo es: ${currentUser.email}`), '_blank');
-        }
-
-        function openModal(id) { document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); }
-        function closeModal(id) { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); }
-
-        function exportarExcel(id, name) { XLSX.writeFile(XLSX.utils.table_to_book(document.getElementById(id)), name + '.xlsx'); }
-        function exportarPDF(id, name) { html2pdf().from(document.getElementById(id)).save(name + '.pdf'); }
-    </script>
-</body>
-</html>
+            if (listaAsientosGlobal.length === 0) return alert
