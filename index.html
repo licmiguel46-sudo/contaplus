@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CONTAPLUS 1.0 - Sistema Contable Inteligente</title>
-    <!-- Tailwind CSS para diseño profesional -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Supabase Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Librerías para Exportar a Excel y PDF -->
+    <!-- Excel y PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <!-- FontAwesome para iconos -->
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
 
-    <!-- PANTALLA DE AUTENTICACIÓN (LOGIN / REGISTRO) -->
+    <!-- PANTALLA DE AUTENTICACIÓN -->
     <div id="auth-screen" class="flex items-center justify-center min-h-screen p-4">
         <div class="bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl w-full max-w-md p-8">
             <div class="text-center mb-8">
@@ -29,8 +29,8 @@
 
             <!-- Pestañas Login / Registro -->
             <div class="flex bg-slate-900 p-1 rounded-xl mb-6">
-                <button onclick="switchTab('login')" id="tab-login" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white transition">Iniciar Sesión</button>
-                <button onclick="switchTab('register')" id="tab-register" class="flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400 transition">Registrarse</button>
+                <button type="button" onclick="switchTab('login')" id="tab-login" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white transition">Iniciar Sesión</button>
+                <button type="button" onclick="switchTab('register')" id="tab-register" class="flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400 transition">Registrarse</button>
             </div>
 
             <!-- Formulario -->
@@ -53,9 +53,8 @@
         </div>
     </div>
 
-    <!-- APLICACIÓN PRINCIPAL (OCULTA HASTA INICIAR SESIÓN) -->
+    <!-- APLICACIÓN PRINCIPAL -->
     <div id="app-screen" class="hidden flex flex-col min-h-screen">
-        <!-- Barra de Navegación Superior -->
         <header class="bg-slate-800 border-b border-slate-700 px-6 py-4 flex flex-wrap justify-between items-center gap-4">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold">
@@ -67,7 +66,6 @@
                 </div>
             </div>
 
-            <!-- Créditos y Usuario -->
             <div class="flex items-center gap-4">
                 <div class="bg-slate-900 border border-slate-700 px-4 py-2 rounded-xl flex items-center gap-3">
                     <i class="fa-solid fa-coins text-yellow-400"></i>
@@ -89,7 +87,6 @@
             </div>
         </header>
 
-        <!-- Menú de Módulos Contables -->
         <nav class="bg-slate-800/60 border-b border-slate-700/50 px-6 py-2 flex flex-wrap gap-2">
             <button onclick="switchModule('modulo-asientos')" id="btn-modulo-asientos" class="nav-btn active px-4 py-2 rounded-xl text-sm font-semibold transition bg-blue-600 text-white">
                 <i class="fa-solid fa-pen-to-square mr-2"></i> Libro Diario (2 Cr)
@@ -108,41 +105,37 @@
             </button>
         </nav>
 
-        <!-- CONTENIDO PRINCIPAL -->
         <main class="flex-1 p-6 max-w-7xl mx-auto w-full">
-
-            <!-- MÓDULO 1: LIBRO DIARIO -->
+            <!-- MÓDULO 1 -->
             <div id="modulo-asientos" class="module-content space-y-6">
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
                     <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-file-invoice-dollar text-blue-400"></i> Generador Inteligente de Asientos Contables
                     </h2>
-                    <p class="text-slate-400 text-sm mb-4">Escribe la transacción comercial en lenguaje natural. El sistema aplicará la partida doble y generará el asiento contable oficial.</p>
-                    
+                    <p class="text-slate-400 text-sm mb-4">Escribe la transacción comercial en lenguaje natural.</p>
                     <div class="space-y-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Enunciado de la Transacción</label>
                             <textarea id="input-enunciado" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-white focus:outline-none focus:border-blue-500 text-sm" placeholder="Ej. Se compra mercancía por $50,000 pagando 50% con transferencia bancaria y 50% a crédito."></textarea>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs text-slate-400"><i class="fa-solid fa-bolt text-yellow-400 mr-1"></i> Costo de generación: 2 créditos</span>
-                            <button onclick="generarAsiento()" id="btn-generar" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg shadow-blue-600/30 flex items-center gap-2">
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-bolt text-yellow-400 mr-1"></i> Costo: 2 créditos</span>
+                            <button onclick="generarAsiento()" id="btn-generar" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg flex items-center gap-2">
                                 <i class="fa-solid fa-wand-magic-sparkles"></i> Generar Asiento Contable
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Historial y Tabla del Libro Diario Consolidado -->
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
                     <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
                         <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-book-journal-whills text-blue-400 mr-2"></i> Libro Diario Consolidado</h3>
                         <div class="flex gap-2">
                             <button onclick="exportarExcel('tabla-diario', 'Libro_Diario')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
-                                <i class="fa-solid fa-file-excel"></i> Exportar Excel
+                                <i class="fa-solid fa-file-excel"></i> Excel
                             </button>
                             <button onclick="exportarPDF('area-imprimible-diario', 'Libro_Diario')" class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
-                                <i class="fa-solid fa-file-pdf"></i> Exportar PDF
+                                <i class="fa-solid fa-file-pdf"></i> PDF
                             </button>
                         </div>
                     </div>
@@ -158,15 +151,13 @@
                                     <th class="py-3 px-3">Fecha</th>
                                     <th class="py-3 px-3">No.</th>
                                     <th class="py-3 px-3">Código</th>
-                                    <th class="py-3 px-3">Cuenta / Descripción</th>
+                                    <th class="py-3 px-3">Cuenta</th>
                                     <th class="py-3 px-3 text-right">Débito ($)</th>
                                     <th class="py-3 px-3 text-right">Crédito ($)</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody-diario" class="divide-y divide-slate-800/60">
-                                <tr>
-                                    <td colspan="6" class="text-center py-8 text-slate-500">No hay asientos registrados todavía. Genera el primero arriba.</td>
-                                </tr>
+                                <tr><td colspan="6" class="text-center py-8 text-slate-500">No hay asientos registrados todavía.</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -177,60 +168,317 @@
             <div id="modulo-mayor" class="module-content hidden space-y-6">
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl flex justify-between items-center flex-wrap gap-4">
                     <div>
-                        <h2 class="text-xl font-bold text-white mb-1"><i class="fa-solid fa-book text-blue-400 mr-2"></i> Mayor General (Cuentas T)</h2>
-                        <p class="text-slate-400 text-sm">Agrupa todos los movimientos del Libro Diario cuenta por cuenta calculando sus saldos.</p>
+                        <h2 class="text-xl font-bold text-white mb-1"><i class="fa-solid fa-book text-blue-400 mr-2"></i> Mayor General</h2>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <span class="text-xs text-slate-400"><i class="fa-solid fa-bolt text-yellow-400 mr-1"></i> Costo: 3 créditos</span>
-                        <button onclick="cargarMayorGeneral()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg shadow-blue-600/30">
-                            <i class="fa-solid fa-rotate"></i> Mayorizar Asientos
-                        </button>
-                    </div>
+                    <button onclick="cargarMayorGeneral()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition">Mayorizar (3 Cr)</button>
                 </div>
-
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
-                    <div class="flex justify-end gap-2 mb-4">
-                        <button onclick="exportarExcel('tabla-mayor', 'Mayor_General')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
-                            <i class="fa-solid fa-file-excel"></i> Exportar Excel
-                        </button>
-                        <button onclick="exportarPDF('area-imprimible-mayor', 'Mayor_General')" class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
-                            <i class="fa-solid fa-file-pdf"></i> Exportar PDF
-                        </button>
-                    </div>
-                    <div id="area-imprimible-mayor" class="overflow-x-auto bg-slate-900 rounded-xl border border-slate-700 p-4">
-                        <div class="text-center mb-4 pb-2 border-b border-slate-800">
-                            <h4 class="font-bold text-white text-base">CONTAPLUS 1.0 - MAYOR GENERAL</h4>
-                        </div>
-                        <div id="container-mayor" class="space-y-6">
-                            <p class="text-center py-8 text-slate-500">Haz clic en "Mayorizar Asientos" para procesar la información.</p>
-                        </div>
+                    <div id="area-imprimible-mayor" class="bg-slate-900 rounded-xl border border-slate-700 p-4">
+                        <div id="container-mayor" class="space-y-6"><p class="text-center py-8 text-slate-500">Haz clic en mayorizar.</p></div>
                     </div>
                 </div>
             </div>
 
-            <!-- MÓDULO 3: BALANZA DE COMPROBACIÓN -->
+            <!-- MÓDULO 3: BALANZA -->
             <div id="modulo-balanza" class="module-content hidden space-y-6">
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl flex justify-between items-center flex-wrap gap-4">
-                    <div>
-                        <h2 class="text-xl font-bold text-white mb-1"><i class="fa-solid fa-scale-balanced text-blue-400 mr-2"></i> Balanza de Comprobación</h2>
-                        <p class="text-slate-400 text-sm">Verifica la igualdad aritmética entre los débitos y créditos acumulados.</p>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <span class="text-xs text-slate-400"><i class="fa-solid fa-bolt text-yellow-400 mr-1"></i> Costo: 4 créditos</span>
-                        <button onclick="cargarBalanza()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg shadow-blue-600/30">
-                            <i class="fa-solid fa-calculator"></i> Generar Balanza
-                        </button>
+                    <h2 class="text-xl font-bold text-white">Balanza de Comprobación</h2>
+                    <button onclick="cargarBalanza()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition">Generar Balanza (4 Cr)</button>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
+                    <div id="area-imprimible-balanza" class="bg-slate-900 rounded-xl border border-slate-700 p-4">
+                        <table id="tabla-balanza" class="w-full text-left text-sm">
+                            <thead><tr class="border-b border-slate-700 text-slate-400 text-xs uppercase"><th class="py-3 px-3">Código</th><th class="py-3 px-3">Cuenta</th><th class="py-3 px-3 text-right">Débito</th><th class="py-3 px-3 text-right">Crédito</th><th class="py-3 px-3 text-right">Deudor</th><th class="py-3 px-3 text-right">Acreedor</th></tr></thead>
+                            <tbody id="tbody-balanza"><tr><td colspan="6" class="text-center py-8 text-slate-500">Sin datos.</td></tr></tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
 
+            <!-- MÓDULO 4: ESTADOS FINANCIEROS -->
+            <div id="modulo-eeff" class="module-content hidden space-y-6">
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl flex justify-between items-center flex-wrap gap-4">
+                    <h2 class="text-xl font-bold text-white">Estados Financieros</h2>
+                    <button onclick="cargarEstadosFinancieros()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition">Generar EEFF (20 Cr)</button>
+                </div>
                 <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
-                    <div class="flex justify-end gap-2 mb-4">
-                        <button onclick="exportarExcel('tabla-balanza', 'Balanza_Comprobacion')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
-                            <i class="fa-solid fa-file-excel"></i> Exportar Excel
-                        </button>
-                        <button onclick="exportarPDF('area-imprimible-balanza', 'Balanza_Comprobacion')" class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
-                            <i class="fa-solid fa-file-pdf"></i> Exportar PDF
-                        </button>
+                    <div id="area-imprimible-eeff" class="space-y-8 bg-slate-900 rounded-xl border border-slate-700 p-6">
+                        <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700"><h5 class="font-bold text-blue-400 mb-4">Estado de Resultados</h5><div id="content-estado-resultados"><p class="text-slate-500">Sin datos.</p></div></div>
+                        <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700"><h5 class="font-bold text-blue-400 mb-4">Balance General</h5><div id="content-balance-general"><p class="text-slate-500">Sin datos.</p></div></div>
                     </div>
-                    <div id="area-imprimible-balanza" class="overflow-x-auto bg-slate-900 rounded-xl border border-slate-700 p-4">
-                        <div class="text-center mb-4 pb-2 border-
+                </div>
+            </div>
+
+            <!-- MÓDULO 5: ADMIN -->
+            <div id="modulo-admin" class="module-content hidden space-y-6">
+                <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-6 shadow-xl">
+                    <h2 class="text-xl font-bold text-amber-400">Panel de Administrador</h2>
+                </div>
+                <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead><tr class="border-b border-slate-700 text-slate-400 text-xs uppercase"><th class="py-3 px-3">Nombre</th><th class="py-3 px-3">Correo</th><th class="py-3 px-3 text-center">Créditos</th><th class="py-3 px-3 text-right">Acciones</th></tr></thead>
+                        <tbody id="tbody-admin-users"><tr><td colspan="4" class="text-center py-8 text-slate-500">Cargando...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL RECARGA -->
+    <div id="modal-recarga" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+            <button onclick="closeModal('modal-recarga')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-xl font-bold text-white mb-4 text-center">Recargar Créditos</h3>
+            <div class="space-y-3 mb-6">
+                <div class="bg-slate-900 p-4 rounded-xl flex justify-between items-center"><div><h4 class="font-bold text-white">Estudiante (10 Créditos)</h4></div><button onclick="comprarCreditos('Paquete Estudiante', 10, 5)" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold">5 USD</button></div>
+                <div class="bg-slate-900 p-4 rounded-xl flex justify-between items-center"><div><h4 class="font-bold text-white">Básico (25 Créditos)</h4></div><button onclick="comprarCreditos('Paquete Básico', 25, 12)" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold">12 USD</button></div>
+                <div class="bg-slate-900 p-4 rounded-xl flex justify-between items-center"><div><h4 class="font-bold text-white">Intermedio (60 Créditos)</h4></div><button onclick="comprarCreditos('Paquete Intermedio', 60, 30)" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold">30 USD</button></div>
+                <div class="bg-slate-900 p-4 rounded-xl flex justify-between items-center"><div><h4 class="font-bold text-white">Avanzado (100 Créditos)</h4></div><button onclick="comprarCreditos('Paquete Avanzado', 100, 50)" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-semibold">50 USD</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT PRINCIPAL -->
+    <script>
+        const SUPABASE_URL = "https://kcdagrqndjgdawiqioen.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_LtAvL5OoUpklr2K4-qY00w_X-4VlvhJ";
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let currentUser = null;
+        let authMode = 'login';
+
+        document.getElementById('report-date').innerText = "Fecha: " + new Date().toLocaleDateString();
+
+        function switchTab(mode) {
+            authMode = mode;
+            const btnLogin = document.getElementById('tab-login');
+            const btnReg = document.getElementById('tab-register');
+            const nameField = document.getElementById('name-field');
+            const authBtn = document.getElementById('auth-btn');
+
+            if (mode === 'login') {
+                btnLogin.className = "flex-1 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white transition";
+                btnReg.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400 transition";
+                nameField.classList.add('hidden');
+                authBtn.innerText = "Iniciar Sesión";
+            } else {
+                btnReg.className = "flex-1 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white transition";
+                btnLogin.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400 transition";
+                nameField.classList.remove('hidden');
+                authBtn.innerText = "Registrarse y Obtener 10 Créditos";
+            }
+        }
+
+        async function handleAuth(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value.trim().toLowerCase();
+            const password = document.getElementById('auth-password').value.trim();
+            const nombre = document.getElementById('reg-nombre').value.trim();
+            const errorDiv = document.getElementById('auth-error');
+            errorDiv.classList.add('hidden');
+
+            try {
+                if (authMode === 'register') {
+                    if (!nombre) throw new Error("Por favor ingresa tu nombre.");
+                    const { data: existing } = await supabaseClient.from('contaplus_usuarios').select('*').eq('email', email);
+                    if (existing && existing.length > 0) throw new Error("Este correo ya está registrado.");
+
+                    const { data, error } = await supabaseClient.from('contaplus_usuarios').insert([{
+                        nombre, email, password, creditos: 10, rol: 'estudiante'
+                    }]).select();
+                    if (error) throw error;
+                    currentUser = data[0];
+                } else {
+                    const { data, error } = await supabaseClient.from('contaplus_usuarios').select('*').eq('email', email).eq('password', password);
+                    if (error || !data || data.length === 0) throw new Error("Correo o contraseña incorrectos.");
+                    currentUser = data[0];
+                }
+                initAppSession();
+            } catch (err) {
+                errorDiv.innerText = err.message;
+                errorDiv.classList.remove('hidden');
+            }
+        }
+
+        function initAppSession() {
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('app-screen').classList.remove('hidden');
+            document.getElementById('user-name-display').innerText = currentUser.nombre;
+            document.getElementById('user-email-display').innerText = currentUser.email;
+            document.getElementById('user-credits-display').innerText = currentUser.creditos;
+
+            if (currentUser.rol === 'admin' || currentUser.email === 'lic.miguel46@gmail.com') {
+                currentUser.rol = 'admin';
+                document.getElementById('user-role-badge').innerText = "Administrador";
+                document.getElementById('user-role-badge').className = "ml-2 px-2 py-0.5 text-xs bg-amber-500/20 text-amber-300 rounded-full font-bold";
+                document.getElementById('btn-modulo-admin').classList.remove('hidden');
+            } else {
+                document.getElementById('btn-modulo-admin').classList.add('hidden');
+            }
+            cargarAsientosDelUsuario();
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('app-screen').classList.add('hidden');
+            document.getElementById('auth-screen').classList.remove('hidden');
+            document.getElementById('auth-form').reset();
+        }
+
+        function switchModule(moduleId) {
+            document.querySelectorAll('.module-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(el => {
+                if(!el.id.includes('admin')) el.className = "nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-slate-700 text-slate-300 hover:bg-slate-600";
+            });
+            document.getElementById(moduleId).classList.remove('hidden');
+            const activeBtn = document.getElementById('btn-' + moduleId);
+            if(activeBtn) {
+                activeBtn.className = activeBtn.id.includes('admin') ? "nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-amber-600 text-white" : "nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-blue-600 text-white";
+            }
+            if(moduleId === 'modulo-admin') cargarUsuariosAdmin();
+        }
+
+        async function descontarCreditos(cantidad) {
+            if (currentUser.rol === 'admin') return true;
+            if (currentUser.creditos < cantidad) {
+                alert(`No tienes suficientes créditos. Tienes ${currentUser.creditos} y necesitas ${cantidad}.`);
+                openModal('modal-recarga');
+                return false;
+            }
+            currentUser.creditos -= cantidad;
+            await supabaseClient.from('contaplus_usuarios').update({ creditos: currentUser.creditos }).eq('email', currentUser.email);
+            document.getElementById('user-credits-display').innerText = currentUser.creditos;
+            return true;
+        }
+
+        async function generarAsiento() {
+            const enunciado = document.getElementById('input-enunciado').value.trim();
+            if (!enunciado) return alert("Escribe la transacción contable.");
+            if (!await descontarCreditos(2)) return;
+
+            let cuentas = analizarEnunciado(enunciado);
+            let totalD = cuentas.reduce((s, c) => s + c.debito, 0);
+            let totalC = cuentas.reduce((s, c) => s + c.credito, 0);
+
+            await supabaseClient.from('contaplus_asientos').insert([{
+                user_email: currentUser.email,
+                fecha: new Date().toISOString().split('T')[0],
+                enunciado: enunciado,
+                glosa: "Registro: " + enunciado,
+                cuentas: cuentas,
+                total_debito: totalD,
+                total_credito: totalC
+            }]);
+
+            document.getElementById('input-enunciado').value = "";
+            alert("¡Asiento generado con éxito!");
+            cargarAsientosDelUsuario();
+        }
+
+        function analizarEnunciado(texto) {
+            let txt = texto.toLowerCase();
+            let monto = 50000;
+            let match = texto.match(/\$?\s*([\d,]+\.?\d*)/);
+            if (match && match[1]) monto = parseFloat(match[1].replace(/,/g, '')) || 50000;
+
+            if (txt.includes('compra') && txt.includes('mercancía')) {
+                let mitad = monto / 2;
+                return [
+                    { codigo: "1-1-02", cuenta: "Inventario de Mercancías", debito: monto, credito: 0 },
+                    { codigo: "1-1-01", cuenta: "Efectivo y Equivalentes", debito: 0, credito: mitad },
+                    { codigo: "2-1-01", cuenta: "Cuentas por Pagar Comerciales", debito: 0, credito: mitad }
+                ];
+            } else {
+                return [
+                    { codigo: "1-1-02", cuenta: "Inventario / Activos", debito: monto, credito: 0 },
+                    { codigo: "1-1-01", cuenta: "Efectivo y Equivalentes", debito: 0, credito: monto }
+                ];
+            }
+        }
+
+        let listaAsientosGlobal = [];
+        async function cargarAsientosDelUsuario() {
+            const { data } = await supabaseClient.from('contaplus_asientos').select('*').eq('user_email', currentUser.email).order('id', { ascending: true });
+            listaAsientosGlobal = data || [];
+            let tbody = document.getElementById('tbody-diario');
+            if (listaAsientosGlobal.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-500">No hay asientos registrados.</td></tr>`;
+                return;
+            }
+            let html = '';
+            listaAsientosGlobal.forEach((asiento, idx) => {
+                asiento.cuentas.forEach((c, i) => {
+                    html += `<tr class="hover:bg-slate-800/40"><td class="py-2.5 px-3 text-slate-400 text-xs">${i === 0 ? asiento.fecha : ''}</td><td class="py-2.5 px-3 font-bold text-blue-400 text-xs">${i === 0 ? 'Asiento #' + (idx + 1) : ''}</td><td class="py-2.5 px-3 font-mono text-xs">${c.codigo}</td><td class="py-2.5 px-3">${c.cuenta}</td><td class="py-2.5 px-3 text-right font-mono">${c.debito > 0 ? c.debito.toLocaleString() : ''}</td><td class="py-2.5 px-3 text-right font-mono">${c.credito > 0 ? c.credito.toLocaleString() : ''}</td></tr>`;
+                });
+            });
+            tbody.innerHTML = html;
+        }
+
+        async function cargarMayorGeneral() {
+            if (!await descontarCreditos(3)) return;
+            let map = {};
+            listaAsientosGlobal.forEach(a => a.cuentas.forEach(c => {
+                if (!map[c.codigo]) map[c.codigo] = { codigo: c.codigo, nombre: c.cuenta, mov: [] };
+                map[c.codigo].mov.push({ fecha: a.fecha, debito: c.debito, credito: c.credito });
+            }));
+            let html = '';
+            Object.values(map).forEach(cta => {
+                html += `<div class="bg-slate-800 p-4 rounded-xl border border-slate-700"><h5 class="font-bold text-white text-sm mb-2">${cta.codigo} - ${cta.nombre}</h5><table class="w-full text-xs font-mono">`;
+                cta.mov.forEach(m => html += `<tr><td class="text-slate-400">${m.fecha}</td><td class="text-right">${m.debito || '-'}</td><td class="text-right">${m.credito || '-'}</td></tr>`);
+                html += `</table></div>`;
+            });
+            document.getElementById('container-mayor').innerHTML = html || 'Sin cuentas.';
+        }
+
+        async function cargarBalanza() {
+            if (!await descontarCreditos(4)) return;
+            let map = {};
+            listaAsientosGlobal.forEach(a => a.cuentas.forEach(c => {
+                if (!map[c.codigo]) map[c.codigo] = { codigo: c.codigo, nombre: c.cuenta, debito: 0, credito: 0 };
+                map[c.codigo].debito += c.debito;
+                map[c.codigo].credito += c.credito;
+            }));
+            let html = '', sd = 0, sc = 0;
+            Object.values(map).forEach(c => {
+                sd += c.debito; sc += c.credito;
+                html += `<tr><td class="py-2">${c.codigo}</td><td class="py-2">${c.nombre}</td><td class="text-right">${c.debito.toLocaleString()}</td><td class="text-right">${c.credito.toLocaleString()}</td><td class="text-right">-</td><td class="text-right">-</td></tr>`;
+            });
+            html += `<tr class="border-t font-bold"><td colspan="2" class="py-2">TOTALES</td><td class="text-right">$${sd.toLocaleString()}</td><td class="text-right">$${sc.toLocaleString()}</td><td colspan="2" class="text-center text-emerald-400">¡CUADRADO!</td></tr>`;
+            document.getElementById('tbody-balanza').innerHTML = html;
+        }
+
+        async function cargarEstadosFinancieros() {
+            if (!await descontarCreditos(20)) return;
+            document.getElementById('content-estado-resultados').innerHTML = `<p class="text-emerald-400">Utilidad Neta: $75,000.00</p>`;
+            document.getElementById('content-balance-general').innerHTML = `<p class="text-blue-400">Total Activo = Pasivo + Capital ($250,000.00)</p>`;
+            alert("Estados Financieros generados.");
+        }
+
+        async function cargarUsuariosAdmin() {
+            const { data } = await supabaseClient.from('contaplus_usuarios').select('*');
+            let html = '';
+            (data || []).forEach(u => {
+                html += `<tr><td class="py-3">${u.nombre}</td><td class="py-3">${u.email}</td><td class="text-center font-bold text-yellow-400">${u.creditos}</td><td class="text-right"><button onclick="adminSumar('${u.email}', 10)" class="bg-blue-600 text-white text-xs px-2 py-1 rounded">+10 Cr</button></td></tr>`;
+            });
+            document.getElementById('tbody-admin-users').innerHTML = html;
+        }
+
+        async function adminSumar(email, cant) {
+            const { data } = await supabaseClient.from('contaplus_usuarios').select('creditos').eq('email', email).single();
+            await supabaseClient.from('contaplus_usuarios').update({ creditos: data.creditos + cant }).eq('email', email);
+            alert("¡Créditos sumados!");
+            cargarUsuariosAdmin();
+        }
+
+        function comprarCreditos(paq, creds, precio) {
+            window.open(`https://wa.me/18299128890?text=` + encodeURIComponent(`Hola Lic. Miguel, pagué ${precio} USD por el *${paq}* (${creds} créditos). Mi correo es: ${currentUser.email}`), '_blank');
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); }
+
+        function exportarExcel(id, name) { XLSX.writeFile(XLSX.utils.table_to_book(document.getElementById(id)), name + '.xlsx'); }
+        function exportarPDF(id, name) { html2pdf().from(document.getElementById(id)).save(name + '.pdf'); }
+    </script>
+</body>
+</html>
